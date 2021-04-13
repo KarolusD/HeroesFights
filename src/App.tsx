@@ -1,16 +1,22 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import { darkTheme } from './theme/theme'
-import { HelmetProvider, Helmet } from 'react-helmet-async'
 import Navigation from './navigation/Navigation'
+import { darkTheme } from './theme/theme'
 
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     font-family: 'Kanit', 'sans-serif';
     font-size: 100%;
+    font-weight: 400;
     margin: 0;
     padding: 0;
+  }
+
+  body {
+    overflow: hidden;
   }
 
   .anticon {
@@ -18,11 +24,13 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
+const queryClient = new QueryClient()
+
 const App: React.FC = () => {
   return (
-    <HelmetProvider>
-      <ThemeProvider theme={darkTheme}>
-        <Fragment>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <ThemeProvider theme={darkTheme}>
           <Helmet>
             <link rel="preconnect" href="https://fonts.gstatic.com" />
             <link
@@ -32,9 +40,9 @@ const App: React.FC = () => {
           </Helmet>
           <Navigation />
           <GlobalStyle />
-        </Fragment>
-      </ThemeProvider>
-    </HelmetProvider>
+        </ThemeProvider>
+      </HelmetProvider>
+    </QueryClientProvider>
   )
 }
 

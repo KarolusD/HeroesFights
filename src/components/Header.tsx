@@ -9,15 +9,18 @@ const TopBar = styled.header`
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.almostBackground}`};
   display: flex;
   padding: 0 40px;
+  position: sticky;
   flex-flow: row nowrap;
   justify-content: space-between;
   height: 80px;
   width: 100%;
+  z-index: 100;
 `
 
 const Logo = styled.h1`
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.2rem;
+  font-weight: 600;
 `
 
 const List = styled.ul`
@@ -28,7 +31,10 @@ const List = styled.ul`
   list-style-type: none;
 `
 
-const Item = styled.li``
+const Item = styled.li`
+  font-size: 1rem;
+  font-weight: 400;
+`
 
 const StyledLink = styled(NavLink)`
   align-items: center;
@@ -70,7 +76,7 @@ const Info = styled.a`
 
 interface Props {}
 
-const Header: React.FC = (props: Props) => {
+const Header: React.FC<Props> = () => {
   return (
     <TopBar>
       <Logo>Super heros fights</Logo>
