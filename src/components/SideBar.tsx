@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { CheckOutlined } from '@ant-design/icons'
 import { IHero } from '../types/types'
@@ -166,23 +166,34 @@ const SideBar: React.FC<Props> = ({
   side,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filteredHeros, setFilteredHeros] = useState<IHero[] | undefined>()
 
-  const handleHeroSelecion = (hero: IHero) => {
-    setPlayerHero(hero)
-  }
+  useEffect(() => {
+    if (searchTerm === '') {
+      setFilteredHeros(heros)
+    }
+    if (heros && searchTerm !== '') {
+      const results = heros.filter((hero) => {
+        let regEx = new RegExp(`${searchTerm.trim()}`, 'gi')
+        //  /(\bt\S+\b)/ig
+        return regEx.test(hero.name)
+      })
+      setFilteredHeros(results)
+    }
+  }, [searchTerm, heros])
 
   return (
     <Container side={side}>
       <SearchForm>
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        {filteredHeros && <SearchBar setSearchTerm={setSearchTerm} />}
       </SearchForm>
       <HerosGrid>
-        {heros &&
-          heros.map((hero: IHero) => (
+        {filteredHeros &&
+          filteredHeros.map((hero: IHero) => (
             <Hero
               isSelected={playerHero && hero.id === playerHero.id}
               key={hero.id}
-              onClick={() => handleHeroSelecion(hero)}
+              onClick={() => setPlayerHero(hero)}
               side={side}
             >
               <HeroImg src={hero.images.md} />
@@ -197,4 +208,4 @@ const SideBar: React.FC<Props> = ({
   )
 }
 
-export default React.memo(SideBar)
+export default SideBar

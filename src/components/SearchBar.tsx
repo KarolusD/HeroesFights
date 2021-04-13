@@ -1,20 +1,7 @@
 import React, { Dispatch, FormEvent, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { debounce } from 'lodash'
+import { debounce, throttle } from 'lodash'
 import { SearchOutlined } from '@ant-design/icons'
-
-const Field = styled.div`
-  position: relative;
-  height: 48px;
-  width: 100%;
-
-  & .search-icon {
-    color: ${({ theme }) => theme.colors.gray};
-    position: absolute;
-    top: 14px;
-    left: 12px;
-  }
-`
 
 const Search = styled.input`
   background: ${({ theme }) => `${theme.colors.darkGray}EF`};
@@ -26,8 +13,8 @@ const Search = styled.input`
   padding-left: 40px;
   width: 100%;
 
-  &:focus + .search-icon {
-    color: ${({ theme }) => theme.colors.text};
+  &:focus {
+    outline: ${({ theme }) => `1px solid ${theme.colors.gray}`};
   }
 
   &::placeholder {
@@ -35,22 +22,34 @@ const Search = styled.input`
   }
 `
 
+const SearchIcon = styled(SearchOutlined)`
+  color: ${({ theme }) => theme.colors.gray};
+  position: absolute;
+  top: 14px;
+  left: 12px;
+
+  ${Search}:focus + & {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`
+
+const Field = styled.div`
+  position: relative;
+  height: 48px;
+  width: 100%;
+`
+
 interface Props {
-  searchTerm: string
   setSearchTerm: Dispatch<string>
 }
 
-const SearchBar: React.FC<Props> = ({ searchTerm, setSearchTerm }) => {
+const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
   const [keyword, setKeyword] = useState<string>('')
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearching = useCallback(
-    (value) => {
-      debounce(() => {
-        setSearchTerm(value)
-        // send the server request here
-      }, 1000)
-    },
-    [setSearchTerm]
+    throttle((value) => setSearchTerm(value), 1000),
+    []
   )
 
   const handleTyping = (event: FormEvent<EventTarget>) => {
@@ -62,12 +61,13 @@ const SearchBar: React.FC<Props> = ({ searchTerm, setSearchTerm }) => {
 
   return (
     <Field>
-      <SearchOutlined className="search-icon" />
+      <span className="d" />
       <Search
-        value={keyword}
-        placeholder="Search for hero"
         onChange={handleTyping}
+        placeholder="Search for hero"
+        value={keyword}
       />
+      <SearchIcon className="search-icon" />
     </Field>
   )
 }
