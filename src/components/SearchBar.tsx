@@ -1,7 +1,7 @@
 import React, { Dispatch, FormEvent, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { debounce, throttle } from 'lodash'
-import { SearchOutlined } from '@ant-design/icons'
+import { throttle } from 'lodash'
+import { CloseOutlined, SearchOutlined } from '@ant-design/icons'
 
 const Search = styled.input`
   background: ${({ theme }) => `${theme.colors.darkGray}EF`};
@@ -10,8 +10,10 @@ const Search = styled.input`
   color: ${({ theme }) => theme.colors.text};
   height: 100%;
   margin-bottom: 12px;
+  outline: transparent;
   padding-left: 40px;
   width: 100%;
+  transition: outline 200ms ease;
 
   &:focus {
     outline: ${({ theme }) => `1px solid ${theme.colors.gray}`};
@@ -27,8 +29,34 @@ const SearchIcon = styled(SearchOutlined)`
   position: absolute;
   top: 14px;
   left: 12px;
+  transition: color 200ms ease;
 
-  ${Search}:focus + & {
+  ${Search}:focus ~ & {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  padding: 4px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  visibility: hidden;
+
+  ${Search}:focus ~ & {
+    visibility: visible !important;
+  }
+`
+
+const CloseIcon = styled(CloseOutlined)`
+  color: ${({ theme }) => theme.colors.gray};
+  transition: color 200ms ease;
+
+  ${CloseButton}:hover > & {
     color: ${({ theme }) => theme.colors.text};
   }
 `
@@ -67,7 +95,10 @@ const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
         placeholder="Search for hero"
         value={keyword}
       />
-      <SearchIcon className="search-icon" />
+      <SearchIcon />
+      <CloseButton>
+        <CloseIcon />
+      </CloseButton>
     </Field>
   )
 }
