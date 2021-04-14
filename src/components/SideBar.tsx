@@ -168,10 +168,13 @@ const SideBar: React.FC<Props> = ({
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [filteredHeros, setFilteredHeros] = useState<IHero[] | undefined>()
 
+  // useEffect(() => {
+  //   if (heros && !filteredHeros) {
+  //     setFilteredHeros(heros)
+  //   }
+  // }, [heros, filteredHeros])
+
   useEffect(() => {
-    if (searchTerm === '') {
-      setFilteredHeros(heros)
-    }
     if (heros && searchTerm !== '') {
       const results = heros.filter((hero) => {
         let regEx = new RegExp(`${searchTerm.trim()}`, 'gi')
@@ -179,13 +182,15 @@ const SideBar: React.FC<Props> = ({
         return regEx.test(hero.name)
       })
       setFilteredHeros(results)
+    } else if (heros) {
+      setFilteredHeros(heros)
     }
   }, [searchTerm, heros])
 
   return (
     <Container side={side}>
       <SearchForm>
-        {filteredHeros && <SearchBar setSearchTerm={setSearchTerm} />}
+        {heros && <SearchBar setSearchTerm={setSearchTerm} />}
       </SearchForm>
       <HerosGrid>
         {filteredHeros &&
@@ -208,4 +213,4 @@ const SideBar: React.FC<Props> = ({
   )
 }
 
-export default SideBar
+export default React.memo(SideBar)

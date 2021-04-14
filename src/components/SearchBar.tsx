@@ -45,10 +45,10 @@ const CloseButton = styled.button`
   position: absolute;
   right: 8px;
   top: 8px;
-  visibility: hidden;
+  opacity: 0;
 
-  ${Search}:focus ~ & {
-    visibility: visible !important;
+  ${Search}:not(:placeholder-shown) ~ & {
+    opacity: 1;
   }
 `
 
@@ -75,7 +75,7 @@ const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
   const [keyword, setKeyword] = useState<string>('')
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceSearching = useCallback(
+  const throttleSearching = useCallback(
     throttle((value) => setSearchTerm(value), 1000),
     []
   )
@@ -84,7 +84,13 @@ const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
     event.preventDefault()
     let target = event.target as HTMLInputElement
     setKeyword(target.value)
-    debounceSearching(target.value)
+    throttleSearching(target.value)
+  }
+
+  const clearSearch = (event: FormEvent<EventTarget>) => {
+    event.preventDefault()
+    setKeyword('')
+    throttleSearching('')
   }
 
   return (
@@ -96,7 +102,7 @@ const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
         value={keyword}
       />
       <SearchIcon />
-      <CloseButton>
+      <CloseButton type="button" onClick={(e) => clearSearch(e)}>
         <CloseIcon />
       </CloseButton>
     </Field>
