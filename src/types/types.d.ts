@@ -1,4 +1,17 @@
-export declare interface IHero {
+interface ObjectKeys {
+  [key: string]: number
+}
+
+export interface IPowerStats extends ObjectKeys {
+  intelligence: number
+  strength: number
+  speed: number
+  durability: number
+  power: number
+  combat: number
+}
+
+export interface IHero {
   id: number
   name: string
   slug: string
@@ -25,4 +38,5 @@ export declare interface IHero {
     eyeColor: string
     hairColor: string
   }
+  powerstats: IPowerStats
 }

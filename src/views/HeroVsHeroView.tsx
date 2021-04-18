@@ -3,6 +3,23 @@ import SideBar from '../components/SideBar'
 import MainTemplate from '../templates/MainTemplate'
 import { useQuery } from 'react-query'
 import { IHero } from '../types/types'
+import styled from 'styled-components'
+import Hero from '../components/Hero'
+
+const MainSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 100%;
+  padding: 80px 320px 0 320px;
+  width: 100%;
+`
+
+const Versus = styled.h1`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 2.4rem;
+  margin-top: 108px;
+`
 
 interface Props {}
 
@@ -23,7 +40,11 @@ const HeroVsHeroView: React.FC<Props> = () => {
         setPlayerHero={setPlayer1Hero}
         side="left"
       />
-
+      <MainSection>
+        <Hero playerHero={player1Hero} side="left" />
+        <Versus>vs</Versus>
+        <Hero playerHero={player2Hero} side="right" />
+      </MainSection>
       <SideBar
         playerHero={player2Hero}
         heros={data}

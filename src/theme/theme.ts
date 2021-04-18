@@ -9,5 +9,7 @@ export const darkTheme = {
     gray: '#6B6FA1',
     darkGray: '#1F213D',
     dark: '#120F24',
+    success: '#6AEA8E',
+    error: '#EA6ACE',
   },
 }

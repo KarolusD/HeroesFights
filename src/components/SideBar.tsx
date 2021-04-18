@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { CheckOutlined } from '@ant-design/icons'
 import { IHero } from '../types/types'
 import SearchBar from './SearchBar'
+import { Grid, WindowScroller } from 'react-virtualized'
 
 const clipPath = css`
   clip-path: polygon(
@@ -20,16 +21,10 @@ const clipPath = css`
 const Container = styled.section<{ side: string }>`
   background: ${({ theme }) => `${theme.colors.dark}32`};
   height: 100vh;
-  overflow-y: scroll;
-  padding: 104px 16px;
+  padding: 80px 16px;
   position: absolute;
-  scrollbar-width: none;
   top: 0;
   width: 320px;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   ${({ side, theme }) =>
     side === 'left' &&
@@ -46,11 +41,12 @@ const Container = styled.section<{ side: string }>`
     `}
 `
 
-const HerosGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 90px;
+const HerosGrid = styled(Grid)`
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const Hero = styled.button<{ isSelected?: boolean; side: 'left' | 'right' }>`
@@ -60,10 +56,14 @@ const Hero = styled.button<{ isSelected?: boolean; side: 'left' | 'right' }>`
   border: none;
   cursor: pointer;
   display: flex;
-  justify-content: center;
   height: 110px;
+  justify-content: center;
+  max-height: 110px;
+  max-width: 84px;
+  padding: 24px 0;
   position: relative;
   width: 84px;
+  box-sizing: border-box;
 
   &::after {
     ${clipPath}
@@ -148,10 +148,20 @@ const HeroName = styled.h2`
 `
 
 const SearchForm = styled.form`
+  margin-top: 24px;
   position: fixed;
   width: 284px;
   z-index: 1;
 `
+
+const RegisteredGrid = styled.div<{ height: number }>`
+  margin-top: 100px;
+  overflow: hidden;
+  height: ${({ height }) => `${height - 180}px`};
+`
+
+const COLUMN_COUNT = 3
+
 interface Props {
   playerHero?: IHero
   heros: IHero[]
@@ -159,20 +169,9 @@ interface Props {
   side: 'left' | 'right'
 }
 
-const SideBar: React.FC<Props> = ({
-  heros,
-  playerHero,
-  setPlayerHero,
-  side,
-}) => {
+const SideBar = ({ heros, playerHero, setPlayerHero, side }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [filteredHeros, setFilteredHeros] = useState<IHero[] | undefined>()
-
-  // useEffect(() => {
-  //   if (heros && !filteredHeros) {
-  //     setFilteredHeros(heros)
-  //   }
-  // }, [heros, filteredHeros])
 
   useEffect(() => {
     if (heros && searchTerm !== '') {
@@ -187,28 +186,69 @@ const SideBar: React.FC<Props> = ({
     }
   }, [searchTerm, heros])
 
+  const cellRenderer = ({ key, columnIndex, rowIndex, style }: any) => {
+    let hero: any = null
+    if (filteredHeros) {
+      hero =
+        filteredHeros[
+          (rowIndex + 1) * COLUMN_COUNT - (COLUMN_COUNT - columnIndex)
+        ]
+    }
+
+    return (
+      hero && (
+        <Hero
+          isSelected={playerHero && hero.id === playerHero.id}
+          key={key}
+          onClick={() => setPlayerHero(hero)}
+          side={side}
+          style={style}
+        >
+          <HeroImg src={hero.images?.md} />
+          {playerHero && hero.id === playerHero.id && (
+            <CheckOutlined className="check" />
+          )}
+          <HeroName className="name">{hero?.name}</HeroName>
+        </Hero>
+      )
+    )
+  }
+
   return (
     <Container side={side}>
-      <SearchForm>
+      <SearchForm
+        onSubmit={(e) => {
+          e.preventDefault()
+        }}
+      >
         {heros && <SearchBar setSearchTerm={setSearchTerm} />}
       </SearchForm>
-      <HerosGrid>
-        {filteredHeros &&
-          filteredHeros.map((hero: IHero) => (
-            <Hero
-              isSelected={playerHero && hero.id === playerHero.id}
-              key={hero.id}
-              onClick={() => setPlayerHero(hero)}
-              side={side}
-            >
-              <HeroImg src={hero.images.md} />
-              {playerHero && hero.id === playerHero.id && (
-                <CheckOutlined className="check" />
-              )}
-              <HeroName className="name">{hero.name}</HeroName>
-            </Hero>
-          ))}
-      </HerosGrid>
+      {filteredHeros && (
+        <WindowScroller>
+          {({ isScrolling, registerChild, height }) => (
+            <RegisteredGrid ref={registerChild} height={height}>
+              <HerosGrid
+                aria-label="none"
+                containerStyle={{
+                  width: '284px',
+                  maxWidth: 'none',
+                }}
+                cellRenderer={cellRenderer}
+                columnCount={COLUMN_COUNT}
+                columnWidth={102}
+                height={height}
+                isScrolling={isScrolling}
+                rowCount={Math.max(
+                  1,
+                  Math.round(filteredHeros.length / COLUMN_COUNT)
+                )}
+                rowHeight={124}
+                width={284}
+              />
+            </RegisteredGrid>
+          )}
+        </WindowScroller>
+      )}
     </Container>
   )
 }

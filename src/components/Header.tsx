@@ -29,6 +29,7 @@ const List = styled.ul`
   flex-flow: row nowrap;
   justify-content: center;
   list-style-type: none;
+  margin-right: 80px;
 `
 
 const Item = styled.li`
