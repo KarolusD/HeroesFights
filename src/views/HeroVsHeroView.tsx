@@ -1,29 +1,17 @@
-import React, { useState } from 'react'
-import SideBar from '../components/SideBar'
+import React, { useContext, useState } from 'react'
+import SideBar from '../components/SideBar/SideBar'
 import MainTemplate from '../templates/MainTemplate'
 import { useQuery } from 'react-query'
 import { IHero } from '../types/types'
-import styled from 'styled-components'
-import Hero from '../components/Hero'
-
-const MainSection = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  height: 100%;
-  padding: 80px 320px 0 320px;
-  width: 100%;
-`
-
-const Versus = styled.h1`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 2.4rem;
-  margin-top: 108px;
-`
+import styled, { ThemeContext } from 'styled-components'
+import Hero from '../components/Hero/Hero'
+import Loader from 'react-loader-spinner'
 
 interface Props {}
 
 const HeroVsHeroView: React.FC<Props> = () => {
+  const theme = useContext(ThemeContext)
+
   const { isLoading, error, data } = useQuery('todos', async () => {
     const response = await fetch('http://localhost:5000/api/v1/heros')
     return await response.json()
@@ -56,3 +44,18 @@ const HeroVsHeroView: React.FC<Props> = () => {
 }
 
 export default HeroVsHeroView
+
+const MainSection = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 100%;
+  padding: 80px 320px 0 320px;
+  width: 100%;
+`
+
+const Versus = styled.h1`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 2.4rem;
+  margin-top: 108px;
+`

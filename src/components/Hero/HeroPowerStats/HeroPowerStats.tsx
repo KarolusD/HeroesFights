@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import HeroStatsBorderLeft from '../assets/HeroStatsBorderLeft'
-import HeroStatsBorderRight from '../assets/HeroStatsBorderRight'
-import { IHero, IPowerStats } from '../types/types'
+import HeroStatsBorderLeft from '../../../assets/HeroStatsBorderLeft'
+import HeroStatsBorderRight from '../../../assets/HeroStatsBorderRight'
+import { usePowerStats } from '../../../hooks/usePowerStats'
+import { IHero } from '../../../types/types'
 import PreparationButton from './PreparationButton'
 
 type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'
@@ -85,10 +86,6 @@ const PowerStats = styled.div`
   }
 `
 
-const calculateBonus = (currStats: number, defaultStats: number) => {
-  return parseFloat(((-1 + currStats / defaultStats) * 100).toFixed(1))
-}
-
 const displayBonus = (bonus: number, key: string) => {
   if (bonus < 0) {
     return <Bonus key={key}>{`${bonus}%`}</Bonus>
@@ -106,63 +103,9 @@ interface Props {
 
 const HeroPowerStats = ({ playerHero, side }: Props) => {
   const [preparation, setPreparation] = useState<PreparationT>('prepared')
-  const [heroStats, setHeroStats] = useState<IPowerStats>()
-  const [heroBonus, setHeroBonus] = useState<IPowerStats>()
+  const { heroStats, heroBonus } = usePowerStats(preparation, playerHero)
 
   const theme = useContext(ThemeContext)
-
-  useEffect(() => {
-    if (playerHero) {
-      const { powerstats } = playerHero
-      let calculatedStats: IPowerStats | undefined
-
-      if (preparation === 'unprepared') {
-        calculatedStats = Object.keys(powerstats).reduce(
-          (acc: any, key: string) => {
-            let value =
-              powerstats[key] -
-              (100 - powerstats.strength) / 10 -
-              (100 - powerstats.power) / 10 -
-              (100 - powerstats.combat) / 10
-
-            acc[key] = value < 0 ? 0 : parseFloat(value.toFixed(2))
-            return acc
-          },
-          {}
-        )
-      } else if (preparation === 'prepared') {
-        calculatedStats = powerstats
-      } else if (preparation === 'fully-prepared') {
-        calculatedStats = Object.keys(powerstats).reduce(
-          (acc: any, key: string) => {
-            let value =
-              powerstats[key] +
-              powerstats.intelligence / 10 +
-              powerstats.speed / 10 +
-              powerstats.combat / 10
-            acc[key] = value > 100 ? 100 : parseFloat(value.toFixed(1))
-            return acc
-          },
-          {}
-        )
-      }
-      if (calculatedStats) {
-        const bonus = Object.keys(calculatedStats).reduce(
-          (acc: any, key: string) => {
-            let value =
-              calculatedStats &&
-              calculateBonus(calculatedStats[key], powerstats[key])
-
-            acc[key] = value
-            return acc
-          },
-          {}
-        )
-        setHeroBonus(bonus)
-      }
-      setHeroStats(calculatedStats)
-    }
-  }, [playerHero, preparation])
 
   return (
     <HeroStats>
@@ -175,9 +118,8 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
         className="border border-right"
         fill={side === 'left' ? theme.colors.blue : theme.colors.red}
       />
-      {playerHero &&
-        heroStats &&
-        Object.keys(heroStats).map((key: string, i) => {
+      {heroStats &&
+        Object.keys(heroStats).map((key: string) => {
           return (
             <PowerStats key={key}>
               <h3 className="stats">
@@ -191,9 +133,10 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
           )
         })}
       <ButtonsContainer>
-        {PREPARATION_NAMES.map((prep) => (
+        {PREPARATION_NAMES.map((prep, idx) => (
           <PreparationButton
             onClick={() => setPreparation(prep)}
+            key={idx}
             selected={preparation === prep}
             preparation={prep}
             side={side}
