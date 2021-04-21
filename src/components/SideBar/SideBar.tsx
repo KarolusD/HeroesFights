@@ -1,9 +1,8 @@
 import React, { Dispatch, useState } from 'react'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 import styled, { css } from 'styled-components'
 import { useHeroSearch } from '../../hooks/useHeroSearch'
 import { IHero } from '../../types/types'
-import SearchBar from '../SearchBar/SearchBar'
+import SearchBar from './SearchBar/SearchBar'
 import HerosGrid from './HerosGrid/HerosGrid'
 
 interface Props {

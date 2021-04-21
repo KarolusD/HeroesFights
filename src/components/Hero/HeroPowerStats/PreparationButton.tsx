@@ -42,7 +42,6 @@ const StyledPrepBtn = styled.button<IStyledPrepBtn>`
     }};
   }
 `
-
 interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>
   selected?: boolean
