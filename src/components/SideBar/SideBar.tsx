@@ -41,16 +41,10 @@ export default React.memo(SideBar)
 const Container = styled.section<{ side: string }>`
   background: ${({ theme }) => `${theme.colors.dark}32`};
   height: 100vh;
-  padding: 80px 16px;
+  padding: 80px 16px 0 16px;
   position: absolute;
   top: 0;
   width: 320px;
-  overflow: scroll;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   ${({ side, theme }) =>
     side === 'left' &&

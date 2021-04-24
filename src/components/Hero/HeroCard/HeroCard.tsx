@@ -1,8 +1,6 @@
-import React from 'react'
-import styled, { css } from 'styled-components'
+import React, { useContext } from 'react'
+import styled, { css, ThemeContext } from 'styled-components'
 import unknowHero from '../../../assets/unknown.png'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import 'react-lazy-load-image-component/src/effects/blur.css'
 
 interface Props {
   heroImage?: string
@@ -14,8 +12,9 @@ const HeroCard = ({ heroImage, heroAlt }: Props) => {
     <StyledHeroCard>
       <StyledHeroImage
         alt={heroAlt}
-        effect="blur"
+        height={266}
         src={heroImage ? heroImage : unknowHero}
+        width={200}
       />
     </StyledHeroCard>
   )
@@ -42,7 +41,7 @@ const StyledHeroCard = styled.div`
   width: 200px;
 `
 
-const StyledHeroImage = styled(LazyLoadImage)`
+const StyledHeroImage = styled.img`
   height: 100%;
   width: 100%;
 `

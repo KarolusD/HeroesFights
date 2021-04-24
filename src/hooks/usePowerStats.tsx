@@ -43,7 +43,7 @@ export const usePowerStats = (
               powerstats.intelligence / 10 +
               powerstats.speed / 10 +
               powerstats.combat / 10
-            acc[key] = value > 100 ? 100 : parseFloat(value.toFixed(1))
+            acc[key] = parseFloat(value.toFixed(1))
             return acc
           },
           {}
