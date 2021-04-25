@@ -12,7 +12,12 @@ interface Props {
 const Hero = ({ playerHero, side }: Props) => {
   return (
     <HeroContainer>
-      <HeroCard heroAlt={playerHero?.name} heroImage={playerHero?.images?.lg} />
+      <HeroCard
+        heroAlt={playerHero?.name}
+        heroAppearance={playerHero?.appearance}
+        heroBiography={playerHero?.biography}
+        heroImage={playerHero?.images?.lg}
+      />
       {playerHero && <HeroPowerStats playerHero={playerHero} side={side} />}
     </HeroContainer>
   )

@@ -6,42 +6,6 @@ interface IStyledPrepBtn {
   selected?: boolean
 }
 
-const StyledPrepBtn = styled.button<IStyledPrepBtn>`
-  background: ${({ selected, side, theme }) => {
-    if (selected) {
-      return side === 'left' ? theme.colors.blue : theme.colors.red
-    }
-    return 'transparent'
-  }};
-  border: ${({ side, theme }) =>
-    side === 'left'
-      ? `1px solid ${theme.colors.blue}`
-      : `1px solid ${theme.colors.red}`};
-  box-shadow: none;
-  color: ${({ selected, side, theme }) => {
-    if (selected) {
-      return theme.colors.background
-    }
-    return side === 'left' ? theme.colors.blue : theme.colors.red
-  }};
-  cursor: pointer;
-  height: 40px;
-  overflow: hidden;
-  text-transform: capitalize;
-  transition: 200ms ease;
-  width: 40px;
-  white-space: nowrap;
-
-  &:hover,
-  &:focus {
-    outline: none;
-    background: ${({ selected, theme }) => {
-      if (!selected) {
-        return theme.colors.almostBackground
-      }
-    }};
-  }
-`
 interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>
   selected?: boolean
@@ -100,3 +64,40 @@ const PreparationButton = ({ onClick, selected, side, preparation }: Props) => {
 }
 
 export default PreparationButton
+
+const StyledPrepBtn = styled.button<IStyledPrepBtn>`
+  background: ${({ selected, side, theme }) => {
+    if (selected) {
+      return side === 'left' ? theme.colors.blue : theme.colors.red
+    }
+    return 'transparent'
+  }};
+  border: ${({ side, theme }) =>
+    side === 'left'
+      ? `1px solid ${theme.colors.blue}`
+      : `1px solid ${theme.colors.red}`};
+  box-shadow: none;
+  color: ${({ selected, side, theme }) => {
+    if (selected) {
+      return theme.colors.background
+    }
+    return side === 'left' ? theme.colors.blue : theme.colors.red
+  }};
+  cursor: pointer;
+  height: 40px;
+  overflow: hidden;
+  text-transform: capitalize;
+  transition: 200ms ease;
+  width: 40px;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    background: ${({ selected, theme }) => {
+      if (!selected) {
+        return theme.colors.almostBackground
+      }
+    }};
+  }
+`

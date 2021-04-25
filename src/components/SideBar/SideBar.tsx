@@ -44,7 +44,8 @@ const Container = styled.section<{ side: string }>`
   padding: 80px 16px 0 16px;
   position: absolute;
   top: 0;
-  width: 320px;
+  min-width: 320px;
+  width: 24vw;
 
   ${({ side, theme }) =>
     side === 'left' &&
@@ -58,12 +59,14 @@ const Container = styled.section<{ side: string }>`
     css`
       border-left: 1px solid ${theme.colors.almostBackground};
       right: 0;
-    `}
+    `} /* @media (max-width: 1365px) {
+    display: none;
+  } */
 `
 
 const SearchForm = styled.form`
   margin-top: 24px;
-  position: fixed;
-  width: 284px;
+  position: sticky;
+  width: 100%;
   z-index: 1;
 `

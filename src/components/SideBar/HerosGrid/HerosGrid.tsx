@@ -1,6 +1,6 @@
-import React, { Dispatch, useEffect, useRef } from 'react'
-import { IHero } from '../../../types/types'
+import React, { Dispatch, useRef } from 'react'
 import styled from 'styled-components'
+import { IHero } from '../../../types/types'
 import HeroInGrid from './HeroInGrid/HeroInGrid'
 
 interface Props {
@@ -39,14 +39,18 @@ const HerosGrid = ({
 
 export default HerosGrid
 
-const StyledGrid = styled.div<{ height?: number }>`
+const StyledGrid = styled.div`
   align-content: flex-start;
   display: grid;
-  padding-bottom: 100px;
-  padding-top: 100px;
   grid-gap: 16px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
   height: 100%;
+  justify-items: center;
+  padding: 180px 16px 100px 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 
   overflow-y: scroll;
   scrollbar-width: none;

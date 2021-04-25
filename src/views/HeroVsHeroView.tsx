@@ -1,17 +1,15 @@
-import React, { useContext, useState } from 'react'
-import SideBar from '../components/SideBar/SideBar'
-import MainTemplate from '../templates/MainTemplate'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
-import { IHero } from '../types/types'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import Hero from '../components/Hero/Hero'
-import Loader from 'react-loader-spinner'
+import SideBar from '../components/SideBar/SideBar'
+import StartButton from '../components/StartButton/StartButton'
+import MainTemplate from '../templates/MainTemplate'
+import { IHero } from '../types/types'
 
 interface Props {}
 
 const HeroVsHeroView: React.FC<Props> = () => {
-  const theme = useContext(ThemeContext)
-
   const { isLoading, error, data } = useQuery('todos', async () => {
     const response = await fetch('http://localhost:5000/api/v1/heros')
     return await response.json()
@@ -32,6 +30,7 @@ const HeroVsHeroView: React.FC<Props> = () => {
         <Hero playerHero={player1Hero} side="left" />
         <Versus>vs</Versus>
         <Hero playerHero={player2Hero} side="right" />
+        <StartButton />
       </MainSection>
       <SideBar
         playerHero={player2Hero}
@@ -50,7 +49,7 @@ const MainSection = styled.section`
   flex-direction: row;
   justify-content: space-around;
   height: 100%;
-  padding: 80px 320px 0 320px;
+  padding: 80px 24vw;
   width: 100%;
 `
 

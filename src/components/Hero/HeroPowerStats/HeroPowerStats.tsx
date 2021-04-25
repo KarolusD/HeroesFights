@@ -14,78 +14,6 @@ const PREPARATION_NAMES: PreparationT[] = [
   'fully-prepared',
 ]
 
-const Bonus = styled.span<{ isPositive?: boolean }>`
-  color: ${({ isPositive, theme }) =>
-    isPositive ? theme.colors.success : theme.colors.error};
-  font-size: 12px;
-  margin-left: 4px;
-`
-
-const ButtonsContainer = styled.div`
-  bottom: -20px;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  margin-top: 20px;
-  position: absolute;
-  width: 160px;
-`
-
-const HeroStats = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: 286px;
-  margin-top: 28px;
-  min-width: 200px;
-  padding: 16px;
-  position: relative;
-
-  & .border {
-    position: absolute;
-    top: 0;
-    height: 100%;
-  }
-
-  & .border-left {
-    left: 0;
-  }
-
-  & .border-right {
-    right: 0;
-  }
-`
-
-const HeroName = styled.h2`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 1.25rem;
-  line-height: 22px;
-  margin-bottom: 16px;
-  margin-top: -28px;
-  max-width: 160px;
-  text-align: center;
-  width: 100%;
-`
-
-const PowerStats = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  width: 100%;
-
-  & > .stats {
-    color: ${({ theme }) => theme.colors.text};
-    font-weight: 400;
-    text-transform: capitalize;
-  }
-
-  & > .value {
-    color: ${({ theme }) => theme.colors.text};
-    font-weight: 600;
-  }
-`
-
 const displayBonus = (bonus: number, key: string) => {
   if (bonus < 0) {
     return <Bonus key={key}>{`${bonus}%`}</Bonus>
@@ -148,3 +76,76 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
 }
 
 export default HeroPowerStats
+
+const Bonus = styled.span<{ isPositive?: boolean }>`
+  color: ${({ isPositive, theme }) =>
+    isPositive ? theme.colors.success : theme.colors.error};
+  font-size: 12px;
+  margin-left: 4px;
+`
+
+const ButtonsContainer = styled.div`
+  bottom: -20px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  margin-top: 20px;
+  position: absolute;
+  width: 160px;
+`
+
+const HeroStats = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 286px;
+  margin-top: 28px;
+  min-width: 200px;
+  padding: 16px;
+  position: relative;
+
+  & .border {
+    position: absolute;
+    top: 0;
+    height: 100%;
+  }
+
+  & .border-left {
+    left: 0;
+  }
+
+  & .border-right {
+    right: 0;
+  }
+`
+
+const HeroName = styled.h2`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 16px;
+  margin-top: -28px;
+  max-width: 160px;
+  text-align: center;
+  width: 100%;
+`
+
+const PowerStats = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  width: 100%;
+
+  & > .stats {
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  & > .value {
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 600;
+  }
+`

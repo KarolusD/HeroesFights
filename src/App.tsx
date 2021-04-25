@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
     font-family: 'Kanit', 'sans-serif';
     font-size: 100%;
-    font-weight: 400;
+    font-weight: 300;
     margin: 0;
     padding: 0;
   }
@@ -42,7 +42,7 @@ const App: React.FC = () => {
           <Helmet>
             <link rel="preconnect" href="https://fonts.gstatic.com" />
             <link
-              href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap"
+              href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap"
               rel="stylesheet"
             />
           </Helmet>

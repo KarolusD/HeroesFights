@@ -1,9 +1,9 @@
 import { CheckOutlined } from '@ant-design/icons'
-import React, { ChangeEvent, Dispatch, useEffect, useState } from 'react'
+import React, { ChangeEvent, Dispatch, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { IHero } from '../../../../types/types'
 import placeholder from '../../../../assets/placeholder.png'
 import { useLazyImage } from '../../../../hooks/useLazyImage'
+import { IHero } from '../../../../types/types'
 
 interface Props {
   isSelected: boolean
@@ -172,7 +172,7 @@ const HeroImg = styled.img`
 
   // I use utilitary classes instead of props to avoid style regenerating
   &.loaded:not(.has-error) {
-    animation: loaded 300ms ease-out;
+    animation: loaded 300ms ease;
     animation-fill-mode: forwards;
   }
 
