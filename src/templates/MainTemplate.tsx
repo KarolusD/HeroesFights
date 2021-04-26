@@ -27,4 +27,10 @@ const Container = styled.main`
       ), ${theme.colors.background}`};
   height: 100vh;
   width: 100vw;
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `

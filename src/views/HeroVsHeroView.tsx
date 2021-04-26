@@ -45,11 +45,13 @@ const HeroVsHeroView: React.FC<Props> = () => {
 export default HeroVsHeroView
 
 const MainSection = styled.section`
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  height: 100%;
-  padding: 80px 24vw;
+  min-height: 1000px;
+  height: 100vh;
+  padding: 16vh 24vw;
   width: 100%;
 `
 

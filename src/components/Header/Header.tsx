@@ -8,11 +8,12 @@ const TopBar = styled.header`
   background: ${({ theme }) => theme.colors.dark};
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.almostBackground}`};
   display: flex;
-  padding: 0 40px;
-  position: sticky;
   flex-flow: row nowrap;
-  justify-content: space-between;
   height: 80px;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: fixed;
+  top: 0;
   width: 100%;
   z-index: 100;
 `
