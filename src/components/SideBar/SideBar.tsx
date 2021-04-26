@@ -1,9 +1,10 @@
 import React, { Dispatch, useState } from 'react'
+import { useSwipeable } from 'react-swipeable'
 import styled, { css } from 'styled-components'
 import { useHeroSearch } from '../../hooks/useHeroSearch'
 import { IHero } from '../../types/types'
-import SearchBar from './SearchBar/SearchBar'
 import HerosGrid from './HerosGrid/HerosGrid'
+import SearchBar from './SearchBar/SearchBar'
 
 interface Props {
   playerHero?: IHero
@@ -14,15 +15,30 @@ interface Props {
 
 const SideBar = ({ heros, playerHero, setPlayerHero, side }: Props) => {
   const [searchTerm, setSearchTerm] = useState('')
-  // TODO: useWindowDimensions hook to specify initial opening state
   const [isOpen, setIsOpen] = useState(false)
-
   const { filteredHeros } = useHeroSearch(heros, searchTerm)
+
+  const handleSwipeLeft = () => {
+    if (isOpen && side === 'left') {
+      setIsOpen(false)
+    }
+  }
+
+  const handleSwipeRight = () => {
+    if (isOpen && side === 'right') {
+      setIsOpen(false)
+    }
+  }
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleSwipeLeft(),
+    onSwipedRight: () => handleSwipeRight(),
+  })
 
   return (
     <>
       <ContainerShadow isOpen={isOpen} onClick={() => setIsOpen(false)} />
-      <Container isOpen={isOpen} side={side}>
+      <Container isOpen={isOpen} side={side} {...handlers}>
         <SearchForm
           onSubmit={(e) => {
             e.preventDefault()
@@ -80,7 +96,7 @@ const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
     transform: ${({ side }) =>
       side === 'left' ? 'transformX(-100%)' : 'transformX(100%)'};
     opacity: 0;
-    transition: 300ms ease;
+    transition: 200ms ease;
     visibility: hidden;
 
     ${({ isOpen }) =>
@@ -96,14 +112,18 @@ const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
 `
 
 const ContainerShadow = styled.div<{ isOpen: boolean }>`
-  background: ${({ theme }) => `${theme.colors.dark}F7`};
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
   height: 100vh;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
   z-index: 99;
+
+  @media (max-width: 1365px) {
+    display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  }
 `
 
 const SearchForm = styled.form`
@@ -125,7 +145,7 @@ const SideBarButton = styled.button<{
   width: 45px;
   top: 16%;
   position: absolute;
-  transition: 300ms ease, right 300ms ease;
+  transition: 200ms ease, right 200ms ease;
   z-index: 98;
 
   &::before {
