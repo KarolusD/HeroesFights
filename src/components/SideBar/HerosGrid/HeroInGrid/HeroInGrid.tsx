@@ -1,20 +1,19 @@
 import { CheckOutlined } from '@ant-design/icons'
-import React, { ChangeEvent, Dispatch, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import styled, { css } from 'styled-components'
 import placeholder from '../../../../assets/placeholder.png'
+import { useHerosContext } from '../../../../hooks/useHerosContext'
 import { useLazyImage } from '../../../../hooks/useLazyImage'
 import { IHero } from '../../../../types/types'
 
 interface Props {
   isSelected: boolean
-  playerHero?: IHero
-  setPlayerHero: Dispatch<IHero>
   hero: IHero
   side: 'left' | 'right'
   root: HTMLElement | null
 }
 
-const HeroInGrid = ({ isSelected, setPlayerHero, hero, side, root }: Props) => {
+const HeroInGrid = ({ isSelected, hero, side, root }: Props) => {
   const [imageRef, setImageRef] = useState<HTMLElement | null>(null)
   const { lazyImageSrc } = useLazyImage(
     {
@@ -27,6 +26,18 @@ const HeroInGrid = ({ isSelected, setPlayerHero, hero, side, root }: Props) => {
     }
   )
 
+  const { dispatch } = useHerosContext()
+
+  const handlePlayerHeroSetting = () => {
+    if (side === 'left') {
+      dispatch({ type: 'SET_PLAYER_1', payload: hero })
+    }
+
+    if (side === 'right') {
+      dispatch({ type: 'SET_PLAYER_2', payload: hero })
+    }
+  }
+
   const onLoad = (event: ChangeEvent<HTMLImageElement>) => {
     event.target.classList.add('loaded')
   }
@@ -36,10 +47,10 @@ const HeroInGrid = ({ isSelected, setPlayerHero, hero, side, root }: Props) => {
   }
 
   return (
-    <Hero
+    <HeroMiniCard
       ref={setImageRef}
       isSelected={isSelected}
-      onClick={() => setPlayerHero(hero)}
+      onClick={handlePlayerHeroSetting}
       side={side}
     >
       <HeroImg
@@ -53,7 +64,7 @@ const HeroInGrid = ({ isSelected, setPlayerHero, hero, side, root }: Props) => {
 
       {isSelected && <CheckOutlined className="check" />}
       <HeroName className="name">{hero?.name}</HeroName>
-    </Hero>
+    </HeroMiniCard>
   )
 }
 
@@ -71,7 +82,10 @@ const clipPath = css`
     0 10%
   );
 `
-const Hero = styled.button<{ isSelected?: boolean; side: 'left' | 'right' }>`
+const HeroMiniCard = styled.button<{
+  isSelected?: boolean
+  side: 'left' | 'right'
+}>`
   ${clipPath}
   align-items: center;
   background: transparent;
@@ -170,14 +184,12 @@ const HeroImg = styled.img`
     }
   }
 
-  // I use utilitary classes instead of props to avoid style regenerating
   &.loaded:not(.has-error) {
     animation: loaded 300ms ease;
     animation-fill-mode: forwards;
   }
 
   &.has-error {
-    // fallback to placeholder image on error
     content: url(${placeholder});
   }
 

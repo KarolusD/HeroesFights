@@ -5,7 +5,7 @@ import TeamVsTeamView from '../views/TeamVsTeamView'
 
 interface Props {}
 
-const Navigation: React.FC = (props: Props) => {
+const Navigation = (props: Props) => {
   return (
     <Router>
       <Switch>

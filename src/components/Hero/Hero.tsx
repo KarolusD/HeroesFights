@@ -1,15 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IHero } from '../../types/types'
+import { useHerosContext } from '../../hooks/useHerosContext'
 import HeroCard from './HeroCard/HeroCard'
 import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
 
 interface Props {
-  playerHero?: IHero
   side: 'left' | 'right'
 }
 
-const Hero = ({ playerHero, side }: Props) => {
+const Hero = ({ side }: Props) => {
+  const {
+    state: { player1, player2 },
+  } = useHerosContext()
+
+  const playerHero = side === 'left' ? player1 : player2
+
   return (
     <HeroContainer>
       <HeroCard

@@ -65,7 +65,7 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
           <PreparationButton
             onClick={() => setPreparation(prep)}
             key={idx}
-            selected={preparation === prep}
+            isSelected={preparation === prep}
             preparation={prep}
             side={side}
           />
@@ -122,7 +122,7 @@ const HeroStats = styled.div`
 const HeroName = styled.h2`
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 22px;
   margin-bottom: 16px;
   margin-top: -28px;
@@ -140,12 +140,12 @@ const PowerStats = styled.div`
 
   & > .stats {
     color: ${({ theme }) => theme.colors.text};
-    font-weight: 400;
+    font-weight: 300;
     text-transform: capitalize;
   }
 
   & > .value {
     color: ${({ theme }) => theme.colors.text};
-    font-weight: 600;
+    font-weight: 500;
   }
 `

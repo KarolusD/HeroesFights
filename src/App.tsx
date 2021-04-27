@@ -3,6 +3,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import PageLoader from './components/PageLoader/PageLoader'
+import { HerosContextProvider } from './context/HerosContext'
 import Navigation from './navigation/Navigation'
 import { darkTheme } from './theme/theme'
 
@@ -39,16 +40,18 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <ThemeProvider theme={darkTheme}>
-          <Helmet>
-            <link rel="preconnect" href="https://fonts.gstatic.com" />
-            <link
-              href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;600&display=swap"
-              rel="stylesheet"
-            />
-          </Helmet>
-          {isLoading && <PageLoader />}
-          <Navigation />
-          <GlobalStyle />
+          <HerosContextProvider>
+            <Helmet>
+              <link rel="preconnect" href="https://fonts.gstatic.com" />
+              <link
+                href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&display=swap"
+                rel="stylesheet"
+              />
+            </Helmet>
+            {isLoading && <PageLoader />}
+            <Navigation />
+            <GlobalStyle />
+          </HerosContextProvider>
         </ThemeProvider>
       </HelmetProvider>
     </QueryClientProvider>

@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface Props {}
+interface Props {
+  onClick?: () => void
+}
 
-const StartButton = (props: Props) => {
-  return <Button>Start fighting!</Button>
+const StartButton = ({ onClick }: Props) => {
+  return <Button onClick={onClick}>Start fighting!</Button>
 }
 
 export default StartButton
@@ -13,18 +15,19 @@ const Button = styled.button`
   background: transparent;
   border: none;
   box-shadow: none;
-  bottom: 10%;
+  margin-bottom: 40px;
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.8px;
   height: 56px;
   left: 50%;
   padding: 0 60px;
-  position: absolute;
+  position: relative;
   transform: translateX(-50%);
   transition: background 200ms ease;
+  white-space: nowrap;
 
   &:hover {
     color: ${({ theme }) => theme.colors.background};

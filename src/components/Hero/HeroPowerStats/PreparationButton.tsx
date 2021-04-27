@@ -3,17 +3,22 @@ import styled from 'styled-components'
 
 interface IStyledPrepBtn {
   side: 'left' | 'right'
-  selected?: boolean
+  isSelected?: boolean
 }
 
 interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>
-  selected?: boolean
+  isSelected?: boolean
   side: 'left' | 'right'
   preparation: 'unprepared' | 'prepared' | 'fully-prepared'
 }
 
-const PreparationButton = ({ onClick, selected, side, preparation }: Props) => {
+const PreparationButton = ({
+  onClick,
+  isSelected,
+  side,
+  preparation,
+}: Props) => {
   const handleMouseEnter = (
     event: React.MouseEvent<HTMLButtonElement>,
     prep: string
@@ -55,7 +60,7 @@ const PreparationButton = ({ onClick, selected, side, preparation }: Props) => {
       onClick={onClick}
       onMouseEnter={(e) => handleMouseEnter(e, preparation)}
       onMouseLeave={(e) => handleMouseLeave(e, preparation)}
-      selected={selected}
+      isSelected={isSelected}
       side={side}
     >
       {preparation.charAt(0)}
@@ -66,8 +71,8 @@ const PreparationButton = ({ onClick, selected, side, preparation }: Props) => {
 export default PreparationButton
 
 const StyledPrepBtn = styled.button<IStyledPrepBtn>`
-  background: ${({ selected, side, theme }) => {
-    if (selected) {
+  background: ${({ isSelected, side, theme }) => {
+    if (isSelected) {
       return side === 'left' ? theme.colors.blue : theme.colors.red
     }
     return 'transparent'
@@ -77,8 +82,8 @@ const StyledPrepBtn = styled.button<IStyledPrepBtn>`
       ? `1px solid ${theme.colors.blue}`
       : `1px solid ${theme.colors.red}`};
   box-shadow: none;
-  color: ${({ selected, side, theme }) => {
-    if (selected) {
+  color: ${({ isSelected, side, theme }) => {
+    if (isSelected) {
       return theme.colors.background
     }
     return side === 'left' ? theme.colors.blue : theme.colors.red
@@ -94,8 +99,8 @@ const StyledPrepBtn = styled.button<IStyledPrepBtn>`
   &:hover,
   &:focus {
     outline: none;
-    background: ${({ selected, theme }) => {
-      if (!selected) {
+    background: ${({ isSelected, theme }) => {
+      if (!isSelected) {
         return theme.colors.almostBackground
       }
     }};

@@ -1,22 +1,24 @@
-import React, { Dispatch, useState } from 'react'
+import React, { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled, { css } from 'styled-components'
+import { useHerosContext } from '../../hooks/useHerosContext'
 import { useHeroSearch } from '../../hooks/useHeroSearch'
-import { IHero } from '../../types/types'
 import HerosGrid from './HerosGrid/HerosGrid'
 import SearchBar from './SearchBar/SearchBar'
 
 interface Props {
-  playerHero?: IHero
-  heros: IHero[]
-  setPlayerHero: Dispatch<IHero>
   side: 'left' | 'right'
 }
 
-const SideBar = ({ heros, playerHero, setPlayerHero, side }: Props) => {
+const SideBar = ({ side }: Props) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const { filteredHeros } = useHeroSearch(heros, searchTerm)
+
+  const {
+    state: { allHeros },
+  } = useHerosContext()
+
+  const { filteredHeros } = useHeroSearch(allHeros, searchTerm)
 
   const handleSwipeLeft = () => {
     if (isOpen && side === 'left') {
@@ -44,22 +46,19 @@ const SideBar = ({ heros, playerHero, setPlayerHero, side }: Props) => {
             e.preventDefault()
           }}
         >
-          {heros && <SearchBar setSearchTerm={setSearchTerm} />}
+          {allHeros && <SearchBar setSearchTerm={setSearchTerm} />}
         </SearchForm>
 
-        <HerosGrid
-          filteredHeros={filteredHeros}
-          playerHero={playerHero}
-          setPlayerHero={setPlayerHero}
-          side={side}
-        />
+        <HerosGrid filteredHeros={filteredHeros} side={side} />
       </Container>
       <SideBarButton
         isOpen={isOpen}
         onClick={() => setIsOpen(!isOpen)}
         side={side}
       >
-        {side === 'left' ? `🦸‍♀️` : `🦸‍♂️`}
+        <SideText side={side}>
+          {side === 'left' ? 'Select player 1 hero' : 'Select player 2 hero'}
+        </SideText>
       </SideBarButton>
     </>
   )
@@ -109,6 +108,10 @@ const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
         z-index: 99;
       `}
   }
+
+  @media (max-width: 320px) {
+    min-width: 256px;
+  }
 `
 
 const ContainerShadow = styled.div<{ isOpen: boolean }>`
@@ -133,6 +136,20 @@ const SearchForm = styled.form`
   z-index: 1;
 `
 
+const SideText = styled.p<{ side: 'left' | 'right' }>`
+  align-items: center;
+  color: ${({ side, theme }) =>
+    side === 'left' ? theme.colors.blue : theme.colors.red};
+  display: flex;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  justify-content: center;
+  transform: ${({ side }) =>
+    side === 'left' ? 'rotateZ(-90deg)' : 'rotateZ(90deg)'};
+  white-space: nowrap;
+`
+
 const SideBarButton = styled.button<{
   side: 'left' | 'right'
   isOpen: boolean
@@ -143,7 +160,7 @@ const SideBarButton = styled.button<{
   display: none;
   height: 242px;
   width: 45px;
-  top: 16%;
+  top: 40%;
   position: absolute;
   transition: 200ms ease, right 200ms ease;
   z-index: 98;
@@ -192,5 +209,13 @@ const SideBarButton = styled.button<{
 
   @media (max-width: 1365px) {
     display: block;
+  }
+
+  @media (max-width: 375px) {
+    ${({ isOpen }) =>
+      isOpen &&
+      css`
+        display: none;
+      `}
   }
 `

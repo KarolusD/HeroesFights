@@ -1,33 +1,32 @@
-import React, { Dispatch, useRef } from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
+import { useHerosContext } from '../../../hooks/useHerosContext'
 import { IHero } from '../../../types/types'
 import HeroInGrid from './HeroInGrid/HeroInGrid'
 
 interface Props {
   filteredHeros?: IHero[]
-  playerHero?: IHero
-  setPlayerHero: Dispatch<IHero>
   side: 'left' | 'right'
 }
 
-const HerosGrid = ({
-  filteredHeros,
-  playerHero,
-  setPlayerHero,
-  side,
-}: Props) => {
+const HerosGrid = ({ filteredHeros, side }: Props) => {
   const gridRef = useRef<HTMLElement>(null)
+
+  const {
+    state: { player1, player2 },
+  } = useHerosContext()
 
   return (
     <StyledGrid ref={gridRef as React.RefObject<HTMLDivElement>}>
       {filteredHeros &&
         filteredHeros.map((hero) => (
           <HeroInGrid
+            isSelected={
+              (side === 'left' && hero.id === player1?.id) ||
+              (side === 'right' && hero.id === player2?.id)
+            }
             hero={hero}
-            isSelected={!!playerHero && hero.id === playerHero.id}
             key={hero.id}
-            setPlayerHero={setPlayerHero}
-            playerHero={playerHero}
             side={side}
             root={gridRef?.current}
           />

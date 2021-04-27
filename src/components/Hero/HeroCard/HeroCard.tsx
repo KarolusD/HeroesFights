@@ -117,7 +117,6 @@ const HeroAppearance = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   margin-bottom: 8px;
-  /* text-transform: capitalize; */
   width: 100%;
 
   & .appearance {
