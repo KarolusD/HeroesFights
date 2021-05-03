@@ -20,6 +20,12 @@ const herosReducer = (state: State, action: Action) => {
         allHeros: action.payload,
       }
     }
+    case 'START_HEROS_FIGHT': {
+      return {
+        ...state,
+        isHerosFighting: action.payload,
+      }
+    }
     default: {
       throw new Error(`Unhandled action type: ${action!.type}`)
     }

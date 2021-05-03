@@ -18,7 +18,16 @@ type AllHerosAction = {
   payload: IHero[]
 }
 
-export type Action = Player1Action | Player2Action | AllHerosAction
+type StartHerosFightAction = {
+  type: 'START_HEROS_FIGHT'
+  payload: boolean
+}
+
+export type Action =
+  | Player1Action
+  | Player2Action
+  | AllHerosAction
+  | StartHerosFightAction
 
 type Dispatch = (action: Action) => void
 
@@ -26,6 +35,7 @@ export type State = {
   player1?: IHero
   player2?: IHero
   allHeros?: IHero[]
+  isHerosFighting: boolean
 }
 
 export const HerosContext = createContext<
@@ -41,6 +51,7 @@ export const HerosContextProvider = ({ children }: Props) => {
     player1: undefined,
     player2: undefined,
     allHeros: [],
+    isHerosFighting: false,
   })
 
   const value = { state, dispatch }

@@ -1,8 +1,10 @@
+import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled, { css } from 'styled-components'
 import { useHerosContext } from '../../hooks/useHerosContext'
 import { useHeroSearch } from '../../hooks/useHeroSearch'
+import { useSideBar } from '../../hooks/useSideBar'
 import HerosGrid from './HerosGrid/HerosGrid'
 import SearchBar from './SearchBar/SearchBar'
 
@@ -11,11 +13,11 @@ interface Props {
 }
 
 const SideBar = ({ side }: Props) => {
+  const [isOpen, setIsOpen] = useSideBar()
   const [searchTerm, setSearchTerm] = useState('')
-  const [isOpen, setIsOpen] = useState(false)
 
   const {
-    state: { allHeros },
+    state: { allHeros, isHerosFighting },
   } = useHerosContext()
 
   const { filteredHeros } = useHeroSearch(allHeros, searchTerm)
@@ -37,10 +39,47 @@ const SideBar = ({ side }: Props) => {
     onSwipedRight: () => handleSwipeRight(),
   })
 
+  const sideBarMotion = {
+    visible: { display: 'block', opacity: 1, x: 0 },
+    hidden: {
+      opacity: 1,
+      x: side === 'left' ? '-100%' : '100%',
+      transitionEnd: { display: 'none' },
+    },
+  }
+
+  const leftSideBtnMotion = {
+    open: { display: 'block', x: '80vw' },
+    close: { display: 'block', x: 0 },
+    hidden: { display: 'none' },
+  }
+
+  const rightSideBtnMotion = {
+    open: { display: 'block', x: '-80vw' },
+    close: { display: 'block', x: 0 },
+    hidden: { display: 'none' },
+  }
+
+  const sideBarTransition = {
+    type: 'ease',
+  }
+
+  const sideBtnTransition = {
+    type: 'ease-in',
+    duration: 0.2,
+  }
+
   return (
     <>
       <ContainerShadow isOpen={isOpen} onClick={() => setIsOpen(false)} />
-      <Container isOpen={isOpen} side={side} {...handlers}>
+      <Container
+        animate={!isHerosFighting && isOpen ? 'visible' : 'hidden'}
+        initial={isOpen ? 'visible' : 'hidden'}
+        side={side}
+        transition={sideBarTransition}
+        variants={sideBarMotion}
+        {...handlers}
+      >
         <SearchForm
           onSubmit={(e) => {
             e.preventDefault()
@@ -66,7 +105,7 @@ const SideBar = ({ side }: Props) => {
 
 export default React.memo(SideBar)
 
-const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
+const Container = styled(motion.section)<{ side: 'left' | 'right' }>`
   background: ${({ theme }) => `${theme.colors.dark}7E`};
   height: 100vh;
   padding: 80px 16px 0 16px;
@@ -74,7 +113,7 @@ const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
   top: 0;
   min-width: 320px;
   width: 24vw;
-  z-index: 1;
+  z-index: 99;
 
   ${({ side, theme }) =>
     side === 'left' &&
@@ -92,21 +131,7 @@ const Container = styled.section<{ side: 'left' | 'right'; isOpen: boolean }>`
   
   @media (max-width: 1365px) {
     background: ${({ theme }) => `${theme.colors.dark}`};
-    transform: ${({ side }) =>
-      side === 'left' ? 'transformX(-100%)' : 'transformX(100%)'};
-    opacity: 0;
-    transition: 200ms ease;
-    visibility: hidden;
-
-    ${({ isOpen }) =>
-      isOpen &&
-      css`
-        opacity: 1;
-        width: 80vw;
-        transform: translateX(0%);
-        visibility: visible;
-        z-index: 99;
-      `}
+    width: 80vw;
   }
 
   @media (max-width: 320px) {
@@ -150,7 +175,7 @@ const SideText = styled.p<{ side: 'left' | 'right' }>`
   white-space: nowrap;
 `
 
-const SideBarButton = styled.button<{
+const SideBarButton = styled(motion.button)<{
   side: 'left' | 'right'
   isOpen: boolean
 }>`
@@ -192,16 +217,16 @@ const SideBarButton = styled.button<{
     side === 'left'
       ? css`
           clip-path: polygon(100% 15%, 100% 85%, 0 100%, 0 0);
-          left: ${() => (isOpen ? '80vw' : '0')};
-          z-index: ${() => (isOpen ? '100' : '98')};
+          left: 0;
+          opacity: ${() => (isOpen ? 0 : 1)};
           &::after {
             left: 0;
           }
         `
       : css`
           clip-path: polygon(100% 0, 100% 100%, 0 85%, 0 15%);
-          right: ${() => (isOpen ? '80vw' : '0')};
-          z-index: ${() => (isOpen ? '100' : '98')};
+          opacity: ${() => (isOpen ? 0 : 1)};
+          right: 0;
           &::after {
             right: 0;
           }

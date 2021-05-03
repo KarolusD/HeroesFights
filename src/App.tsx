@@ -7,26 +7,6 @@ import { HerosContextProvider } from './context/HerosContext'
 import Navigation from './navigation/Navigation'
 import { darkTheme } from './theme/theme'
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-    font-display: swap;
-    font-family: 'Kanit', 'sans-serif';
-    font-size: 100%;
-    font-weight: 300;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    overflow: hidden;
-  }
-
-  .anticon {
-    font-size: 1.25rem;
-  }
-`
-
 const queryClient = new QueryClient()
 
 const App: React.FC = () => {
@@ -59,3 +39,23 @@ const App: React.FC = () => {
 }
 
 export default App
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    font-display: swap;
+    font-family: 'Kanit', 'sans-serif';
+    font-size: 100%;
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    overflow: hidden;
+  }
+
+  .anticon {
+    font-size: 1.25rem;
+  }
+`

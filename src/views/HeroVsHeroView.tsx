@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import styled from 'styled-components'
 import Hero from '../components/Hero/Hero'
@@ -6,11 +6,10 @@ import SideBar from '../components/SideBar/SideBar'
 import StartButton from '../components/StartButton/StartButton'
 import { useHerosContext } from '../hooks/useHerosContext'
 import MainTemplate from '../templates/MainTemplate'
-import { IHero } from '../types/types'
 
 interface Props {}
 
-const HeroVsHeroView: React.FC<Props> = () => {
+const HeroVsHeroView = (props: Props) => {
   const { isLoading, error, data } = useQuery('heros', async () => {
     const response = await fetch('http://localhost:5000/api/v1/heros')
     return await response.json()
@@ -22,6 +21,10 @@ const HeroVsHeroView: React.FC<Props> = () => {
     dispatch({ type: 'SET_ALL_HEROS', payload: data })
   }, [data, dispatch])
 
+  const handleFightStart = () => {
+    dispatch({ type: 'START_HEROS_FIGHT', payload: true })
+  }
+
   return (
     <MainTemplate>
       <SideBar side="left" />
@@ -31,7 +34,7 @@ const HeroVsHeroView: React.FC<Props> = () => {
           <Versus>vs</Versus>
           <Hero side="right" />
         </FlexWrapper>
-        <StartButton />
+        <StartButton onClick={handleFightStart} />
       </MainSection>
       <SideBar side="right" />
     </MainTemplate>
@@ -48,7 +51,7 @@ const MainSection = styled.section`
   width: 100%;
 
   @media (max-width: 1365px) {
-    padding: 32% 12vw;
+    padding: 12vh 12vw;
   }
 `
 
