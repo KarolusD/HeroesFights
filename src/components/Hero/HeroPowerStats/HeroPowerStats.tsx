@@ -1,7 +1,9 @@
+import { motion } from 'framer-motion'
 import React, { useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import HeroStatsBorderLeft from '../../../assets/HeroStatsBorderLeft'
 import HeroStatsBorderRight from '../../../assets/HeroStatsBorderRight'
+import { useHerosContext } from '../../../hooks/useHerosContext'
 import { usePowerStats } from '../../../hooks/usePowerStats'
 import { IHero } from '../../../types/types'
 import PreparationButton from './PreparationButton'
@@ -35,8 +37,27 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
 
   const theme = useContext(ThemeContext)
 
+  const {
+    state: { isHerosFighting },
+  } = useHerosContext()
+
+  const heroStatsVariants = {
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  }
+
+  const heroStatsTransition = {
+    type: 'ease',
+    duration: 0.2,
+  }
+
   return (
-    <HeroStats>
+    <HeroStats
+      animate={isHerosFighting ? 'hidden' : 'visible'}
+      initial={isHerosFighting ? 'hidden' : 'visible'}
+      transition={heroStatsTransition}
+      variants={heroStatsVariants}
+    >
       <HeroName>{playerHero && playerHero?.name}</HeroName>
       <HeroStatsBorderLeft
         className="border border-left"
@@ -94,7 +115,7 @@ const ButtonsContainer = styled.div`
   width: 160px;
 `
 
-const HeroStats = styled.div`
+const HeroStats = styled(motion.div)`
   align-items: center;
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled, { css } from 'styled-components'
 import { useHerosContext } from '../../hooks/useHerosContext'
@@ -39,45 +39,33 @@ const SideBar = ({ side }: Props) => {
     onSwipedRight: () => handleSwipeRight(),
   })
 
-  const sideBarMotion = {
-    visible: { display: 'block', opacity: 1, x: 0 },
+  const sideBarVariants = {
+    visible: {
+      display: 'block',
+      x: 0,
+      transitionEnd: { x: 0 },
+    },
     hidden: {
-      opacity: 1,
+      overflow: 'hidden',
       x: side === 'left' ? '-100%' : '100%',
       transitionEnd: { display: 'none' },
     },
   }
 
-  const leftSideBtnMotion = {
-    open: { display: 'block', x: '80vw' },
-    close: { display: 'block', x: 0 },
-    hidden: { display: 'none' },
-  }
-
-  const rightSideBtnMotion = {
-    open: { display: 'block', x: '-80vw' },
-    close: { display: 'block', x: 0 },
-    hidden: { display: 'none' },
-  }
-
   const sideBarTransition = {
     type: 'ease',
-  }
-
-  const sideBtnTransition = {
-    type: 'ease-in',
-    duration: 0.2,
+    duration: 0.25,
   }
 
   return (
     <>
       <ContainerShadow isOpen={isOpen} onClick={() => setIsOpen(false)} />
       <Container
-        animate={!isHerosFighting && isOpen ? 'visible' : 'hidden'}
+        animate={isOpen ? 'visible' : 'hidden'}
         initial={isOpen ? 'visible' : 'hidden'}
         side={side}
         transition={sideBarTransition}
-        variants={sideBarMotion}
+        variants={sideBarVariants}
         {...handlers}
       >
         <SearchForm
@@ -92,6 +80,7 @@ const SideBar = ({ side }: Props) => {
       </Container>
       <SideBarButton
         isOpen={isOpen}
+        isVisible={!isOpen && !isHerosFighting}
         onClick={() => setIsOpen(!isOpen)}
         side={side}
       >
@@ -143,7 +132,7 @@ const ContainerShadow = styled.div<{ isOpen: boolean }>`
   background: rgba(0, 0, 0, 0.85);
   display: none;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   position: absolute;
   top: 0;
   left: 0;
@@ -175,10 +164,13 @@ const SideText = styled.p<{ side: 'left' | 'right' }>`
   white-space: nowrap;
 `
 
-const SideBarButton = styled(motion.button)<{
+interface ISideBarButton {
   side: 'left' | 'right'
   isOpen: boolean
-}>`
+  isVisible: boolean
+}
+
+const SideBarButton = styled(motion.button)<ISideBarButton>`
   background: transparent;
   border: none;
   cursor: pointer;
@@ -233,14 +225,6 @@ const SideBarButton = styled(motion.button)<{
         `}
 
   @media (max-width: 1365px) {
-    display: block;
-  }
-
-  @media (max-width: 375px) {
-    ${({ isOpen }) =>
-      isOpen &&
-      css`
-        display: none;
-      `}
+    display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
   }
 `

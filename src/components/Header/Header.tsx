@@ -2,12 +2,32 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { InfoCircleOutlined } from '@ant-design/icons'
+import { motion } from 'framer-motion'
+import { useHerosContext } from '../../hooks/useHerosContext'
 
 interface Props {}
 
 const Header: React.FC<Props> = () => {
+  const {
+    state: { isHerosFighting },
+  } = useHerosContext()
+
+  const headerVariants = {
+    visible: { opacity: 1, y: 0, display: 'flex' },
+    hidden: { opacity: 0, y: '-100%', transitionEnd: { display: 'none' } },
+  }
+
+  const headerTransition = {
+    type: 'ease',
+    duration: 0.2,
+  }
+
   return (
-    <TopBar>
+    <TopBar
+      animate={isHerosFighting ? 'hidden' : 'visible'}
+      transition={headerTransition}
+      variants={headerVariants}
+    >
       <Logo>Super heros fights</Logo>
       <nav>
         <List>
@@ -33,7 +53,7 @@ const Header: React.FC<Props> = () => {
 
 export default Header
 
-const TopBar = styled.header`
+const TopBar = styled(motion.header)`
   align-items: center;
   background: ${({ theme }) => theme.colors.dark};
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.almostBackground}`};
@@ -47,7 +67,7 @@ const TopBar = styled.header`
   width: 100%;
   z-index: 100;
 
-  @media (max-width: 765px) {
+  @media (max-width: 768px) {
     padding: 0 16px;
   }
 `
@@ -57,7 +77,7 @@ const Logo = styled.h1`
   font-size: 1.2rem;
   font-weight: 500;
 
-  @media (max-width: 765px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `
@@ -70,7 +90,7 @@ const List = styled.ul`
   list-style-type: none;
   margin-right: 80px;
 
-  @media (max-width: 765px) {
+  @media (max-width: 768px) {
     justify-content: flex-start;
     width: 100%;
   }
@@ -114,7 +134,7 @@ const Info = styled.a`
     color: ${({ theme }) => theme.colors.text};
     margin-right: 8px;
 
-    @media (max-width: 765px) {
+    @media (max-width: 768px) {
       display: none;
     }
   }

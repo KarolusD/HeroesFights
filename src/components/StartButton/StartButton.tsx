@@ -1,17 +1,43 @@
+import { motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
+import { useHerosContext } from '../../hooks/useHerosContext'
 
 interface Props {
   onClick?: () => void
 }
 
 const StartButton = ({ onClick }: Props) => {
-  return <Button onClick={onClick}>Start fighting!</Button>
+  const startButtonVariants = {
+    visible: { top: 0, opacity: 1 },
+    hidden: { top: 100, opacity: 0, transitionEnd: { display: 'none' } },
+  }
+
+  const startButtonTranstion = {
+    type: 'ease',
+    duration: 0.2,
+  }
+
+  const {
+    state: { isHerosFighting },
+  } = useHerosContext()
+
+  return (
+    <Button
+      animate={isHerosFighting ? 'hidden' : 'visible'}
+      initial={isHerosFighting ? 'hidden' : 'visible'}
+      onClick={onClick}
+      transition={startButtonTranstion}
+      variants={startButtonVariants}
+    >
+      Start fighting!
+    </Button>
+  )
 }
 
 export default StartButton
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   background: transparent;
   border: none;
   box-shadow: none;
@@ -37,7 +63,6 @@ const Button = styled.button`
   }
 
   &:focus {
-    /* outline: none; */
     background: ${({ theme }) => theme.colors.almostBackground};
   }
 

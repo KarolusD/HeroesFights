@@ -20,7 +20,10 @@ type AllHerosAction = {
 
 type StartHerosFightAction = {
   type: 'START_HEROS_FIGHT'
-  payload: boolean
+}
+
+type EndHerosFightAction = {
+  type: 'END_HEROS_FIGHT'
 }
 
 export type Action =
@@ -28,6 +31,7 @@ export type Action =
   | Player2Action
   | AllHerosAction
   | StartHerosFightAction
+  | EndHerosFightAction
 
 type Dispatch = (action: Action) => void
 
@@ -38,9 +42,8 @@ export type State = {
   isHerosFighting: boolean
 }
 
-export const HerosContext = createContext<
-  { state: State; dispatch: Dispatch } | undefined
->(undefined)
+export const HerosContext =
+  createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
 
 interface Props {
   children: ReactNode

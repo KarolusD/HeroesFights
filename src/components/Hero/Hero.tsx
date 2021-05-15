@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
+import { useHeroAnimation } from '../../hooks/useHeroAnimation'
 import { useHerosContext } from '../../hooks/useHerosContext'
 import HeroCard from './HeroCard/HeroCard'
 import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
@@ -9,14 +11,21 @@ interface Props {
 }
 
 const Hero = ({ side }: Props) => {
+  const { heroTransition, heroVariants } = useHeroAnimation(side)
+
   const {
-    state: { player1, player2 },
+    state: { player1, player2, isHerosFighting },
   } = useHerosContext()
 
   const playerHero = side === 'left' ? player1 : player2
 
   return (
-    <HeroContainer>
+    <HeroContainer
+      animate={isHerosFighting ? 'fighting' : 'default'}
+      initial="default"
+      transition={heroTransition}
+      variants={heroVariants}
+    >
       <HeroCard
         heroAlt={playerHero?.name}
         heroAppearance={playerHero?.appearance}
@@ -30,7 +39,7 @@ const Hero = ({ side }: Props) => {
 
 export default Hero
 
-const HeroContainer = styled.div`
+const HeroContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   position: relative;
