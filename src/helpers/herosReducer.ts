@@ -32,6 +32,42 @@ const herosReducer = (state: State, action: Action) => {
         isHerosFighting: false,
       }
     }
+    case 'ADD_HERO_POINTS': {
+      return {
+        ...state,
+        playersPoints: {
+          ...state.playersPoints,
+          [action.payload.player]: {
+            bonus: action.payload.bonus,
+            points: action.payload.points,
+          },
+        },
+      }
+    }
+    case 'RESET_HEROS_POINTS': {
+      return {
+        ...state,
+        playersPoints: {
+          player1: {
+            bonus: 0,
+            points: 0,
+          },
+          player2: {
+            bonus: 0,
+            points: 0,
+          },
+        },
+      }
+    }
+    case 'SAVE_CALCULATED_POWERSTATS': {
+      const player = action.payload.player as keyof Action
+      return {
+        ...state,
+        [player]: {
+          ...(state[player] as object),
+        },
+      }
+    }
     default: {
       throw new Error(`Unhandled action type: ${action!.type}`)
     }

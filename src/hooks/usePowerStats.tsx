@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react'
 import { calculateBonus } from '../helpers/calculateBonus'
-import { IHero, IPowerStats } from '../types/types'
+import { IHero, IPowerStats, PreparationT } from '../types/types'
 
 export const usePowerStats = (
-  preparation: 'unprepared' | 'prepared' | 'fully-prepared',
+  preparation: PreparationT,
   playerHero?: IHero,
   initialState?: IPowerStats
 ) => {
-  const [heroStats, setHeroStats] = useState<IPowerStats | undefined>(
-    initialState
-  )
-  const [heroBonus, setHeroBonus] = useState<IPowerStats | undefined>(
-    initialState
-  )
+  const [heroStats, setHeroStats] =
+    useState<IPowerStats | undefined>(initialState)
+  const [heroBonus, setHeroBonus] =
+    useState<IPowerStats | undefined>(initialState)
 
   useEffect(() => {
     if (playerHero) {

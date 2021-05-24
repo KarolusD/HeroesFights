@@ -5,10 +5,8 @@ import HeroStatsBorderLeft from '../../../assets/HeroStatsBorderLeft'
 import HeroStatsBorderRight from '../../../assets/HeroStatsBorderRight'
 import { useHerosContext } from '../../../hooks/useHerosContext'
 import { usePowerStats } from '../../../hooks/usePowerStats'
-import { IHero } from '../../../types/types'
+import { IHero, PreparationT } from '../../../types/types'
 import PreparationButton from './PreparationButton'
-
-type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'
 
 const PREPARATION_NAMES: PreparationT[] = [
   'unprepared',

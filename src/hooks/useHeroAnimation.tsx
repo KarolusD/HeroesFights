@@ -17,7 +17,7 @@ export const useHeroAnimation = (side: 'left' | 'right') => {
       heroScale.set(0.6)
       heroHeight.set('140px')
     } else {
-      heroX.set(side === 'left' ? '-16vw' : '16vw')
+      heroX.set(side === 'left' ? '-14vw' : '14vw')
       heroY.set('10vw')
       heroScale.set(1)
       heroHeight.set('auto')
