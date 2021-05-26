@@ -30,11 +30,11 @@ const HeroInGrid = ({ isSelected, hero, side, root }: Props) => {
 
   const handlePlayerHeroSetting = () => {
     if (side === 'left') {
-      dispatch({ type: 'SET_PLAYER_1', payload: hero })
+      dispatch({ type: 'SET_PLAYER_1', payload: { player1: hero } })
     }
 
     if (side === 'right') {
-      dispatch({ type: 'SET_PLAYER_2', payload: hero })
+      dispatch({ type: 'SET_PLAYER_2', payload: { player2: hero } })
     }
   }
 

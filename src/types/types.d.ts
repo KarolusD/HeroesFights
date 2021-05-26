@@ -41,6 +41,7 @@ export interface IHero {
   powerstats: IPowerStats
   preparantion: PreparationT
   calculatedPowerStats: IPowerStats
+  dice: boolean[]
 }
 
 export type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'

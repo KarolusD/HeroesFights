@@ -1,62 +1,8 @@
 import React, { createContext, ReactNode, useReducer } from 'react'
-import { IHero, IPowerStats, PreparationT } from '../types/types'
+import { IHero } from '../types/types'
 
 import herosReducer from '../helpers/herosReducer'
-
-type SetPlayer1HeroAction = {
-  type: 'SET_PLAYER_1'
-  payload: IHero
-}
-
-type SetPlayer2HeroAction = {
-  type: 'SET_PLAYER_2'
-  payload: IHero
-}
-
-type SetAllHerosAction = {
-  type: 'SET_ALL_HEROS'
-  payload: IHero[]
-}
-
-type StartHerosFightAction = {
-  type: 'START_HEROS_FIGHT'
-}
-
-type EndHerosFightAction = {
-  type: 'END_HEROS_FIGHT'
-}
-
-type AddHeroPointsAction = {
-  type: 'ADD_HERO_POINTS'
-  payload: {
-    player: 'player1' | 'player2'
-    points: number
-    bonus: number
-  }
-}
-
-type ResetHerosPointsAction = {
-  type: 'RESET_HEROS_POINTS'
-}
-
-type SaveCalculatedPowerstatsAction = {
-  type: 'SAVE_CALCULATED_POWERSTATS'
-  payload: {
-    player: 'player1' | 'player2'
-    preparation: PreparationT
-    calculatedPowerStats?: IPowerStats
-  }
-}
-
-export type Action =
-  | SetPlayer1HeroAction
-  | SetPlayer2HeroAction
-  | SetAllHerosAction
-  | StartHerosFightAction
-  | EndHerosFightAction
-  | AddHeroPointsAction
-  | ResetHerosPointsAction
-  | SaveCalculatedPowerstatsAction
+import { Action } from './herosActions'
 
 type Dispatch = (action: Action) => void
 
@@ -65,12 +11,7 @@ export type State = {
   player2?: IHero
   allHeros?: IHero[]
   isHerosFighting: boolean
-  playersPoints: {
-    [data: string]: {
-      bonus: number
-      points: number
-    }
-  }
+  round: number
 }
 
 export const HerosContext =
@@ -86,16 +27,7 @@ export const HerosContextProvider = ({ children }: Props) => {
     player2: undefined,
     allHeros: [],
     isHerosFighting: false,
-    playersPoints: {
-      player1: {
-        bonus: 0,
-        points: 0,
-      },
-      player2: {
-        bonus: 0,
-        points: 0,
-      },
-    },
+    round: 0,
   })
 
   const value = { state, dispatch }

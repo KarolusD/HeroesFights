@@ -27,16 +27,17 @@ const HeroVsHeroView = (props: Props) => {
     state: { player1, player2, isHerosFighting },
   } = useHerosContext()
 
-  const { player1Dices, player2Dices, currentPowerStats, roundWinner, round } =
+  const { player1Dices, player2Dices, currentPowerStats, roundWinner } =
     useHerosFight(player1, player2)
 
-  console.log(round, 're-render hello from here!!!')
+  console.log('re-render hello from here!!!')
+
   const { mainHexColor, mainHexLabel } = useMainHexIndicator(
     roundWinner,
     currentPowerStats
   )
   useEffect(() => {
-    dispatch({ type: 'SET_ALL_HEROS', payload: data })
+    dispatch({ type: 'SET_ALL_HEROS', payload: { allHeros: data } })
   }, [data, dispatch])
 
   const [errorOcc, setErrorOcc] = useState(false)

@@ -2,17 +2,23 @@ import { IHero, IPowerStats, PreparationT } from '../types/types'
 
 type SetPlayer1HeroAction = {
   type: 'SET_PLAYER_1'
-  payload: IHero
+  payload: {
+    player1: IHero
+  }
 }
 
 type SetPlayer2HeroAction = {
   type: 'SET_PLAYER_2'
-  payload: IHero
+  payload: {
+    player2: IHero
+  }
 }
 
 type SetAllHerosAction = {
   type: 'SET_ALL_HEROS'
-  payload: IHero[]
+  payload: {
+    allHeros: IHero[]
+  }
 }
 
 type StartHerosFightAction = {
@@ -36,16 +42,23 @@ type ResetHerosPointsAction = {
   type: 'RESET_HEROS_POINTS'
 }
 
-type SaveCalculatedPowerstatsAction = {
+type SaveCalculatedPowerStatsAction = {
   type: 'SAVE_CALCULATED_POWERSTATS'
   payload: {
     player: 'player1' | 'player2'
     preparation: PreparationT
-    calculatedPowerstats: IPowerStats
+    calculatedPowerStats?: IPowerStats
   }
 }
 
-export type Actions =
+type UpdateDiceCountAction = {
+  type: 'UPDATE_DICES_COUNT'
+  payload: {
+    dice: boolean[]
+  }
+}
+
+export type Action =
   | SetPlayer1HeroAction
   | SetPlayer2HeroAction
   | SetAllHerosAction
@@ -53,4 +66,5 @@ export type Actions =
   | EndHerosFightAction
   | AddHeroPointsAction
   | ResetHerosPointsAction
-  | SaveCalculatedPowerstatsAction
+  | SaveCalculatedPowerStatsAction
+  | UpdateDiceCountAction
