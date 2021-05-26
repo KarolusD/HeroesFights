@@ -8,12 +8,12 @@ import SideBar from '../components/SideBar/SideBar'
 import SnackBar from '../components/SnackBar/SnackBar'
 import StartButton from '../components/StartButton/StartButton'
 import { useHerosContext } from '../hooks/useHerosContext'
+import { useHerosFight } from '../hooks/useHerosFight'
+import { useMainHexIndicator } from '../hooks/useMainHexIndicator'
 import MainTemplate from '../templates/MainTemplate'
 import { IHero } from '../types/types'
 
 interface Props {}
-
-const DICE_NUMBER = 6
 
 const HeroVsHeroView = (props: Props) => {
   const theme = useContext(ThemeContext)
@@ -22,26 +22,25 @@ const HeroVsHeroView = (props: Props) => {
     return await response.json()
   })
 
-  const [currentPowerStats, setCurrentPowerStats] = useState('')
-
-  const [player1Dices, setPlayer1Dices] = useState(
-    [...Array(DICE_NUMBER)].map(() => false)
-  )
-  const [player2Dices, setPlayer2Dices] = useState(
-    [...Array(DICE_NUMBER)].map(() => false)
-  )
-
-  const [errorOcc, setErrorOcc] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
-
   const {
     dispatch,
     state: { player1, player2, isHerosFighting },
   } = useHerosContext()
 
+  const { player1Dices, player2Dices, currentPowerStats, roundWinner, round } =
+    useHerosFight(player1, player2)
+
+  console.log(round, 're-render hello from here!!!')
+  const { mainHexColor, mainHexLabel } = useMainHexIndicator(
+    roundWinner,
+    currentPowerStats
+  )
   useEffect(() => {
     dispatch({ type: 'SET_ALL_HEROS', payload: data })
   }, [data, dispatch])
+
+  const [errorOcc, setErrorOcc] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const handleFightStart = () => {
     if (player1 && player2) {
@@ -55,76 +54,6 @@ const HeroVsHeroView = (props: Props) => {
       }, 3000)
     }
   }
-
-  const handleDiceUpdate = (
-    playerDices: boolean[],
-    statsIdx: number,
-    players: { winner: IHero; losser: IHero }
-  ) => {
-    const { winner, losser } = players
-
-    if (winner && losser) {
-      return playerDices.map((_, diceIdx) => {
-        if (statsIdx < diceIdx) return false
-        if (
-          Object.values(winner.powerstats)[diceIdx] >=
-          Object.values(losser.powerstats)[diceIdx]
-        ) {
-          return true
-        }
-        return false
-      })
-    }
-    return []
-  }
-
-  const handleDices = (stats: string, statsIdx: number) => {
-    if (player1 && player2) {
-      if (player1.powerstats[stats] > player2.powerstats[stats]) {
-        setPlayer1Dices((prevState) =>
-          handleDiceUpdate(prevState, statsIdx, {
-            winner: player1,
-            losser: player2,
-          })
-        )
-      } else if (player1.powerstats[stats] < player2.powerstats[stats]) {
-        setPlayer2Dices((prevState) =>
-          handleDiceUpdate(prevState, statsIdx, {
-            winner: player2,
-            losser: player1,
-          })
-        )
-      } else {
-        setPlayer1Dices((prevState) =>
-          handleDiceUpdate(prevState, statsIdx, {
-            winner: player1,
-            losser: player2,
-          })
-        )
-        setPlayer2Dices((prevState) =>
-          handleDiceUpdate(prevState, statsIdx, {
-            winner: player2,
-            losser: player1,
-          })
-        )
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (player1 && player2 && isHerosFighting) {
-      setCurrentPowerStats('intelligence')
-      Object.keys(player1.powerstats).forEach((stats, idx) => {
-        setTimeout(() => {
-          setCurrentPowerStats(stats)
-          setTimeout(() => {
-            handleDices(stats, idx)
-          }, 1000)
-        }, (idx + 1) * 1500)
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHerosFighting])
 
   const bigHexagonVariants = {
     visible: {
@@ -163,7 +92,7 @@ const HeroVsHeroView = (props: Props) => {
               variants={bigHexagonVariants}
               transition={{ type: 'spring', duration: 0.3, delay: 1.1 }}
             >
-              <Hexagon fill={theme.colors.darkGray} width={92} height={92} />
+              <Hexagon fill={mainHexColor} width={92} height={92} />
             </HexagonWrapper>
           )}
           <Hero

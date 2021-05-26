@@ -44,7 +44,7 @@ type SaveCalculatedPowerstatsAction = {
   payload: {
     player: 'player1' | 'player2'
     preparation: PreparationT
-    calculatedPowerstats: IPowerStats
+    calculatedPowerStats?: IPowerStats
   }
 }
 

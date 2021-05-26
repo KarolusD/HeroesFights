@@ -60,11 +60,21 @@ const herosReducer = (state: State, action: Action) => {
       }
     }
     case 'SAVE_CALCULATED_POWERSTATS': {
-      const player = action.payload.player as keyof Action
+      const { player, calculatedPowerStats, preparation } = action.payload
+      console.log({
+        ...state,
+        [player]: {
+          ...(state[player] as object),
+          preparation,
+          calculatedPowerStats,
+        },
+      })
       return {
         ...state,
         [player]: {
           ...(state[player] as object),
+          preparation,
+          calculatedPowerStats,
         },
       }
     }

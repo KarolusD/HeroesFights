@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { calculateBonus } from '../helpers/calculateBonus'
 import { IHero, IPowerStats, PreparationT } from '../types/types'
+import { useHerosContext } from './useHerosContext'
 
 export const usePowerStats = (
   preparation: PreparationT,
+  side: 'left' | 'right',
   playerHero?: IHero,
   initialState?: IPowerStats
 ) => {
+  const { dispatch } = useHerosContext()
   const [heroStats, setHeroStats] =
     useState<IPowerStats | undefined>(initialState)
   const [heroBonus, setHeroBonus] =
@@ -15,10 +18,10 @@ export const usePowerStats = (
   useEffect(() => {
     if (playerHero) {
       const { powerstats } = playerHero
-      let calculatedStats: IPowerStats | undefined
+      let calculatedPowerStats: IPowerStats | undefined
 
       if (preparation === 'unprepared') {
-        calculatedStats = Object.keys(powerstats).reduce(
+        calculatedPowerStats = Object.keys(powerstats).reduce(
           (acc: any, key: string) => {
             let value =
               powerstats[key] -
@@ -32,9 +35,9 @@ export const usePowerStats = (
           {}
         )
       } else if (preparation === 'prepared') {
-        calculatedStats = powerstats
+        calculatedPowerStats = powerstats
       } else if (preparation === 'fully-prepared') {
-        calculatedStats = Object.keys(powerstats).reduce(
+        calculatedPowerStats = Object.keys(powerstats).reduce(
           (acc: any, key: string) => {
             let value =
               powerstats[key] +
@@ -47,12 +50,12 @@ export const usePowerStats = (
           {}
         )
       }
-      if (calculatedStats) {
-        const bonus = Object.keys(calculatedStats).reduce(
+      if (calculatedPowerStats) {
+        const bonus = Object.keys(calculatedPowerStats).reduce(
           (acc: any, key: string) => {
             let value =
-              calculatedStats &&
-              calculateBonus(calculatedStats[key], powerstats[key])
+              calculatedPowerStats &&
+              calculateBonus(calculatedPowerStats[key], powerstats[key])
 
             acc[key] = value
             return acc
@@ -61,9 +64,21 @@ export const usePowerStats = (
         )
         setHeroBonus(bonus)
       }
-      setHeroStats(calculatedStats)
+      setHeroStats(calculatedPowerStats)
     }
   }, [playerHero, preparation])
+
+  useEffect(() => {
+    console.log('saving calculated powerstats')
+    dispatch({
+      type: 'SAVE_CALCULATED_POWERSTATS',
+      payload: {
+        player: side === 'left' ? 'player1' : 'player2',
+        preparation,
+        calculatedPowerStats: heroStats,
+      },
+    })
+  }, [preparation])
 
   return { heroStats, heroBonus }
 }

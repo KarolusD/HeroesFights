@@ -39,8 +39,8 @@ export interface IHero {
     hairColor: string
   }
   powerstats: IPowerStats
-  preparantion?: PreparationT
-  calculatedPowerstats?: IPowerStats
+  preparantion: PreparationT
+  calculatedPowerStats: IPowerStats
 }
 
 export type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'

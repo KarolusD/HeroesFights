@@ -31,7 +31,12 @@ interface Props {
 
 const HeroPowerStats = ({ playerHero, side }: Props) => {
   const [preparation, setPreparation] = useState<PreparationT>('prepared')
-  const { heroStats, heroBonus } = usePowerStats(preparation, playerHero)
+  const { heroStats, heroBonus } = usePowerStats(
+    preparation,
+    side,
+    playerHero,
+    playerHero?.powerstats
+  )
 
   const theme = useContext(ThemeContext)
 
