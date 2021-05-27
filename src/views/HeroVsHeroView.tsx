@@ -11,7 +11,6 @@ import { useHerosContext } from '../hooks/useHerosContext'
 import { useHerosFight } from '../hooks/useHerosFight'
 import { useMainHexIndicator } from '../hooks/useMainHexIndicator'
 import MainTemplate from '../templates/MainTemplate'
-import { IHero } from '../types/types'
 
 interface Props {}
 
@@ -27,10 +26,7 @@ const HeroVsHeroView = (props: Props) => {
     state: { player1, player2, isHerosFighting },
   } = useHerosContext()
 
-  const { player1Dices, player2Dices, currentPowerStats, roundWinner } =
-    useHerosFight(player1, player2)
-
-  console.log('re-render hello from here!!!')
+  const { currentPowerStats, roundWinner } = useHerosFight(player1, player2)
 
   const { mainHexColor, mainHexLabel } = useMainHexIndicator(
     roundWinner,
@@ -77,7 +73,7 @@ const HeroVsHeroView = (props: Props) => {
         >
           <Hero
             side="left"
-            dices={player1Dices}
+            dice={player1?.diceCount}
             currentPowerStats={currentPowerStats}
           />
           <Versus
@@ -93,12 +89,12 @@ const HeroVsHeroView = (props: Props) => {
               variants={bigHexagonVariants}
               transition={{ type: 'spring', duration: 0.3, delay: 1.1 }}
             >
-              <Hexagon fill={mainHexColor} width={92} height={92} />
+              <StyledHexagon fill={mainHexColor} width={92} height={92} />
             </HexagonWrapper>
           )}
           <Hero
             side="right"
-            dices={player2Dices}
+            dice={player2?.diceCount}
             currentPowerStats={currentPowerStats}
           />
         </FlexWrapper>
@@ -156,10 +152,16 @@ const Versus = styled(motion.h1)`
 const HexagonWrapper = styled(motion.div)`
   position: absolute;
   left: 50%;
-  top: 42%;
-  transform: translate(-50%, -50%);
+  top: 45%;
+  transform: translate(-50%, -50%) !important;
 
   @media (max-width: 768px) {
     transform: translateX(-50%) !important;
+  }
+`
+
+const StyledHexagon = styled(Hexagon)`
+  & path {
+    transition: 250ms ease !important;
   }
 `

@@ -4,11 +4,11 @@ import styled, { ThemeContext } from 'styled-components'
 import Hexagon from '../../assets/Hexagon'
 
 interface Props {
-  dices: boolean[]
+  dice?: boolean[]
   side: 'left' | 'right'
 }
 
-const DicesIndicator = ({ dices, side }: Props) => {
+const DiceIndicator = ({ dice, side }: Props) => {
   const theme = useContext(ThemeContext)
 
   const wrapperVariants = {
@@ -29,12 +29,12 @@ const DicesIndicator = ({ dices, side }: Props) => {
 
   return (
     <Wrapper animate="visible" initial="hidden" variants={wrapperVariants}>
-      {dices.map((dice, idx) => (
-        <motion.div key={`${dice}-${idx}`} variants={itemVariants}>
+      {dice?.map((die, idx) => (
+        <motion.div key={`${die}-${idx}`} variants={itemVariants}>
           <StyledHexagon
             stroke={side === 'left' ? theme.colors.blue : theme.colors.red}
             fill={side === 'left' ? theme.colors.blue : theme.colors.red}
-            fillOpacity={dice ? '1' : '0.2'}
+            fillOpacity={die ? '1' : '0.2'}
           />
         </motion.div>
       ))}
@@ -42,7 +42,7 @@ const DicesIndicator = ({ dices, side }: Props) => {
   )
 }
 
-export default DicesIndicator
+export default DiceIndicator
 
 const Wrapper = styled(motion.div)`
   display: flex;

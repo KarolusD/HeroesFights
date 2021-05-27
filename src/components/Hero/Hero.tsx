@@ -3,17 +3,17 @@ import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useHeroAnimation } from '../../hooks/useHeroAnimation'
 import { useHerosContext } from '../../hooks/useHerosContext'
-import DicesIndicators from '../DicesIndicators/DicesIndicator'
+import DiceIndicators from '../DiceIndicators/DiceIndicator'
 import HeroCard from './HeroCard/HeroCard'
 import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
 
 interface Props {
   currentPowerStats: string
-  dices: boolean[]
+  dice?: boolean[]
   side: 'left' | 'right'
 }
 
-const Hero = ({ currentPowerStats, dices, side }: Props) => {
+const Hero = ({ currentPowerStats, dice, side }: Props) => {
   const { heroTransition, heroVariants } = useHeroAnimation(side)
 
   const {
@@ -44,9 +44,9 @@ const Hero = ({ currentPowerStats, dices, side }: Props) => {
       />
       {isHerosFighting && (
         <>
-          <DicesWrapper side={side}>
-            <DicesIndicators dices={dices} side={side} />
-          </DicesWrapper>
+          <DiceWrapper side={side}>
+            <DiceIndicators dice={dice} side={side} />
+          </DiceWrapper>
           <HeroCurrentStats
             animate="visible"
             initial="hidden"
@@ -55,7 +55,7 @@ const Hero = ({ currentPowerStats, dices, side }: Props) => {
             side={side}
           >
             <h3>{currentPowerStats}</h3>
-            <h2>{playerHero?.powerstats[currentPowerStats]}</h2>
+            <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
           </HeroCurrentStats>
         </>
       )}
@@ -73,7 +73,7 @@ const HeroContainer = styled(motion.div)`
   position: relative;
 `
 
-const DicesWrapper = styled.div<{ side: 'left' | 'right' }>`
+const DiceWrapper = styled.div<{ side: 'left' | 'right' }>`
   position: absolute;
   top: 0;
 

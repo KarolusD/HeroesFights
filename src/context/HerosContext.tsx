@@ -4,8 +4,6 @@ import { IHero } from '../types/types'
 import herosReducer from '../helpers/herosReducer'
 import { Action } from './herosActions'
 
-type Dispatch = (action: Action) => void
-
 export type State = {
   player1?: IHero
   player2?: IHero
@@ -13,6 +11,8 @@ export type State = {
   isHerosFighting: boolean
   round: number
 }
+
+type Dispatch = (action: Action) => void
 
 export const HerosContext =
   createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)

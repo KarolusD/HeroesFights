@@ -65,20 +65,17 @@ export const usePowerStats = (
         setHeroBonus(bonus)
       }
       setHeroStats(calculatedPowerStats)
+      dispatch({
+        type: 'SAVE_CALCULATED_POWERSTATS',
+        payload: {
+          player: side === 'left' ? 'player1' : 'player2',
+          preparation,
+          calculatedPowerStats,
+        },
+      })
     }
-  }, [playerHero, preparation])
-
-  useEffect(() => {
-    console.log('saving calculated powerstats')
-    dispatch({
-      type: 'SAVE_CALCULATED_POWERSTATS',
-      payload: {
-        player: side === 'left' ? 'player1' : 'player2',
-        preparation,
-        calculatedPowerStats: heroStats,
-      },
-    })
-  }, [preparation])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerHero?.id, preparation])
 
   return { heroStats, heroBonus }
 }

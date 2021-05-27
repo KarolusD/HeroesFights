@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components'
+import { useHerosContext } from './useHerosContext'
 
 export const useMainHexIndicator = (
   roundWinner: string,
   currentPowerStats: string
 ) => {
+  const {
+    state: { round },
+  } = useHerosContext()
   const theme = useContext(ThemeContext)
   const [mainHexColor, setMainHexColor] = useState(theme.colors.darkGray)
   const [mainHexLabel, setMainHextLabel] = useState('')
@@ -19,6 +23,11 @@ export const useMainHexIndicator = (
     if (roundWinner === 'tie') {
       setMainHexColor(theme.colors.violet)
     }
+    console.log(roundWinner, '<--- round winner')
+    if (roundWinner === '') {
+      setMainHexColor(theme.colors.darkGray)
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundWinner])
 

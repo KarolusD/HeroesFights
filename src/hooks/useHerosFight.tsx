@@ -8,82 +8,12 @@ export const useHerosFight = (player1?: IHero, player2?: IHero) => {
   const [currentPowerStats, setCurrentPowerStats] = useState('')
   const [roundWinner, setRoundWinner] = useState('')
 
-  const [player1Dices, setPlayer1Dices] = useState(
-    [...Array(DICE_NUMBER)].map(() => false)
-  )
-  const [player2Dices, setPlayer2Dices] = useState(
-    [...Array(DICE_NUMBER)].map(() => false)
-  )
   const {
+    dispatch,
     state: { isHerosFighting },
   } = useHerosContext()
 
-  // const handleDiceUpdate = (
-  //   playerDices: boolean[],
-  //   statsIdx: number,
-  //   players: { winner: IHero; losser: IHero }
-  // ) => {
-  //   const { winner, losser } = players
-
-  //   if (winner && losser) {
-  //     return playerDices.map((_, diceIdx) => {
-  //       if (statsIdx < diceIdx) return false
-  //       if (
-  //         Object.values(winner.powerstats)[diceIdx] >=
-  //         Object.values(losser.powerstats)[diceIdx]
-  //       ) {
-  //         return true
-  //       }
-  //       return false
-  //     })
-  //   }
-  //   return []
-  // }
-
-  // const handleDices = (stats: string, statsIdx: number) => {
-  //   if (player1 && player2) {
-  //     if (
-  //       player1.calculatedPowerStats[stats] >
-  //       player2.calculatedPowerStats[stats]
-  //     ) {
-  //       setRoundWinner('player1')
-  //       setPlayer1Dices((prevState) =>
-  //         handleDiceUpdate(prevState, statsIdx, {
-  //           winner: player1,
-  //           losser: player2,
-  //         })
-  //       )
-  //     } else if (
-  //       player1.calculatedPowerStats[stats] <
-  //       player2.calculatedPowerStats[stats]
-  //     ) {
-  //       setRoundWinner('player2')
-  //       setPlayer2Dices((prevState) =>
-  //         handleDiceUpdate(prevState, statsIdx, {
-  //           winner: player2,
-  //           losser: player1,
-  //         })
-  //       )
-  //     } else {
-  //       setRoundWinner('tie')
-  //       setPlayer1Dices((prevState) =>
-  //         handleDiceUpdate(prevState, statsIdx, {
-  //           winner: player1,
-  //           losser: player2,
-  //         })
-  //       )
-  //       setPlayer2Dices((prevState) =>
-  //         handleDiceUpdate(prevState, statsIdx, {
-  //           winner: player2,
-  //           losser: player1,
-  //         })
-  //       )
-  //     }
-  //   }
-  // }
-
   useEffect(() => {
-    console.log(player1, player2)
     if (
       player1 &&
       player2 &&
@@ -91,18 +21,71 @@ export const useHerosFight = (player1?: IHero, player2?: IHero) => {
       player1.calculatedPowerStats &&
       player2.calculatedPowerStats
     ) {
+      // setting starting fight data
       setCurrentPowerStats('intelligence')
+      player1.diceCount = [...Array(DICE_NUMBER)].map(() => false)
+      player2.diceCount = [...Array(DICE_NUMBER)].map(() => false)
+
       Object.keys(player1.calculatedPowerStats).forEach((stats, idx) => {
         setTimeout(() => {
           setCurrentPowerStats(stats)
+          dispatch({
+            type: 'UPDATE_ROUND_NUMBER',
+            payload: { round: idx + 1 },
+          })
           setTimeout(() => {
-            //handleDices(stats, idx)
+            if (
+              player1.calculatedPowerStats[stats] >
+              player2.calculatedPowerStats[stats]
+            ) {
+              setRoundWinner('player1')
+              player1.diceCount[idx] = true
+              dispatch({
+                type: 'UPDATE_DICE_COUNT',
+                payload: {
+                  player: 'player1',
+                  diceCount: player1.diceCount,
+                },
+              })
+            } else if (
+              player1.calculatedPowerStats[stats] <
+              player2.calculatedPowerStats[stats]
+            ) {
+              setRoundWinner('player2')
+              player2.diceCount[idx] = true
+              dispatch({
+                type: 'UPDATE_DICE_COUNT',
+                payload: {
+                  player: 'player2',
+                  diceCount: player2.diceCount,
+                },
+              })
+            } else {
+              setRoundWinner('tie')
+              player1.diceCount[idx] = true
+              player2.diceCount[idx] = true
+              dispatch({
+                type: 'UPDATE_DICE_COUNT',
+                payload: {
+                  player: 'player1',
+                  diceCount: player1.diceCount,
+                },
+              })
+              dispatch({
+                type: 'UPDATE_DICE_COUNT',
+                payload: {
+                  player: 'player2',
+                  diceCount: player2.diceCount,
+                },
+              })
+            }
           }, 1000)
-        }, (idx + 1) * 1500)
+          setRoundWinner('')
+        }, (idx + 1) * 2000)
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHerosFighting])
 
-  return { player1Dices, player2Dices, currentPowerStats, roundWinner }
+  return { currentPowerStats, roundWinner }
 }

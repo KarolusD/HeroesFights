@@ -52,9 +52,17 @@ type SaveCalculatedPowerStatsAction = {
 }
 
 type UpdateDiceCountAction = {
-  type: 'UPDATE_DICES_COUNT'
+  type: 'UPDATE_DICE_COUNT'
   payload: {
-    dice: boolean[]
+    player: 'player1' | 'player2'
+    diceCount: boolean[]
+  }
+}
+
+type UpdateRoundNumberAction = {
+  type: 'UPDATE_ROUND_NUMBER'
+  payload: {
+    round: number
   }
 }
 
@@ -65,6 +73,7 @@ export type Action =
   | StartHerosFightAction
   | EndHerosFightAction
   | AddHeroPointsAction
-  | ResetHerosPointsAction
   | SaveCalculatedPowerStatsAction
+  | ResetHerosPointsAction
   | UpdateDiceCountAction
+  | UpdateRoundNumberAction
