@@ -105,6 +105,7 @@ const HeroCurrentStats = styled(motion.div)<{ side: 'left' | 'right' }>`
   }
 
   & > h3 {
+    text-transform: capitalize;
     font-size: 2rem;
     font-weight: 300;
   }

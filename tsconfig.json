@@ -1,7 +1,11 @@
 {
+  "include": ["src", "types"],
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "baseUrl": "./",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -9,13 +13,9 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
-  },
-  "types": ["types"],
-  "include": ["src"]
+    "types": ["mocha", "snowpack-env"]
+  }
 }

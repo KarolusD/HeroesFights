@@ -45,10 +45,10 @@ const StyledGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
   height: 100%;
   justify-items: center;
+  left: 0;
   padding: 180px 16px 100px 16px;
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
 
   overflow-y: scroll;

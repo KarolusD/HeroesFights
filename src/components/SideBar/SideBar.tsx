@@ -79,8 +79,8 @@ const SideBar = ({ side }: Props) => {
         <HerosGrid filteredHeros={filteredHeros} side={side} />
       </Container>
       <SideBarButton
-        isOpen={isOpen}
-        isVisible={!isOpen && !isHerosFighting}
+        $isOpen={isOpen}
+        $isVisible={!isOpen && !isHerosFighting}
         onClick={() => setIsOpen(!isOpen)}
         side={side}
       >
@@ -166,8 +166,8 @@ const SideText = styled.p<{ side: 'left' | 'right' }>`
 
 interface ISideBarButton {
   side: 'left' | 'right'
-  isOpen: boolean
-  isVisible: boolean
+  $isOpen: boolean
+  $isVisible: boolean
 }
 
 const SideBarButton = styled(motion.button)<ISideBarButton>`
@@ -205,19 +205,19 @@ const SideBarButton = styled(motion.button)<ISideBarButton>`
     z-index: -1;
   }
 
-  ${({ side, isOpen }) =>
+  ${({ side, $isOpen }) =>
     side === 'left'
       ? css`
           clip-path: polygon(100% 15%, 100% 85%, 0 100%, 0 0);
           left: 0;
-          opacity: ${() => (isOpen ? 0 : 1)};
+          opacity: ${() => ($isOpen ? 0 : 1)};
           &::after {
             left: 0;
           }
         `
       : css`
           clip-path: polygon(100% 0, 100% 100%, 0 85%, 0 15%);
-          opacity: ${() => (isOpen ? 0 : 1)};
+          opacity: ${() => ($isOpen ? 0 : 1)};
           right: 0;
           &::after {
             right: 0;
@@ -225,6 +225,6 @@ const SideBarButton = styled(motion.button)<ISideBarButton>`
         `}
 
   @media (max-width: 1365px) {
-    display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+    display: ${({ $isVisible }) => ($isVisible ? 'block' : 'none')};
   }
 `
