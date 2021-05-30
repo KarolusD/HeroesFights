@@ -1,4 +1,4 @@
-import { IHero, IPowerStats, PreparationT } from '../types/types'
+import { IHero, IPowerStats, PreparationT } from '_types/types'
 
 type SetPlayer1HeroAction = {
   type: 'SET_PLAYER_1'
@@ -34,6 +34,13 @@ type AddHeroPointsAction = {
   payload: {
     player: 'player1' | 'player2'
     points: number
+  }
+}
+
+type AddHeroBonusAction = {
+  type: 'ADD_HERO_BONUS'
+  payload: {
+    player: 'player1' | 'player2'
     bonus: number
   }
 }
@@ -56,6 +63,7 @@ type UpdateDiceCountAction = {
   payload: {
     player: 'player1' | 'player2'
     diceCount: boolean[]
+    diceBonus: number
   }
 }
 

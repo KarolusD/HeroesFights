@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import Hexagon from '../../assets/Hexagon'
+import Hexagon from '_assets/Hexagon'
 
 interface Props {
   dice?: boolean[]
@@ -10,7 +10,7 @@ interface Props {
 
 const DiceIndicator = ({ dice, side }: Props) => {
   const theme = useContext(ThemeContext)
-
+  console.log(theme, 'DiceIndicator')
   const wrapperVariants = {
     hidden: { opacity: 0 },
     visible: {

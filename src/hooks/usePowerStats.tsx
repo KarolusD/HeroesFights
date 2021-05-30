@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { calculateBonus } from '../helpers/calculateBonus'
+import { calculatePreparationBonus } from '_helpers/calculatePreparationBonus'
 import { IHero, IPowerStats, PreparationT } from '../types/types'
-import { useHerosContext } from './useHerosContext'
+import { useHeroesContext } from './useHeroesContext'
 
 export const usePowerStats = (
   preparation: PreparationT,
@@ -9,7 +9,7 @@ export const usePowerStats = (
   playerHero?: IHero,
   initialState?: IPowerStats
 ) => {
-  const { dispatch } = useHerosContext()
+  const { dispatch } = useHeroesContext()
   const [heroStats, setHeroStats] =
     useState<IPowerStats | undefined>(initialState)
   const [heroBonus, setHeroBonus] =
@@ -55,7 +55,10 @@ export const usePowerStats = (
           (acc: any, key: string) => {
             let value =
               calculatedPowerStats &&
-              calculateBonus(calculatedPowerStats[key], powerstats[key])
+              calculatePreparationBonus(
+                calculatedPowerStats[key],
+                powerstats[key]
+              )
 
             acc[key] = value
             return acc

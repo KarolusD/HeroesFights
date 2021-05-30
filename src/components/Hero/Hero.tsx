@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components'
-import { useHeroAnimation } from '../../hooks/useHeroAnimation'
-import { useHerosContext } from '../../hooks/useHerosContext'
+import { useHeroAnimation } from '_hooks/useHeroAnimation'
+import { useHeroesContext } from '_hooks/useHeroesContext'
 import DiceIndicators from '../DiceIndicators/DiceIndicator'
 import HeroCard from './HeroCard/HeroCard'
 import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
@@ -18,15 +18,14 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
 
   const {
     state: { player1, player2, isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   const playerHero = side === 'left' ? player1 : player2
 
-  const currentStatsVarinats = {
-    visible: {
-      opacity: 1,
-    },
-    hidden: { opacity: 0 },
+  const displayDiceBonus = () => {
+    if (playerHero && playerHero.diceBonus && playerHero.diceBonus !== 0) {
+      return `Dice bonus: ${playerHero.diceBonus}`
+    }
   }
 
   return (
@@ -44,6 +43,7 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
       />
       {isHerosFighting && (
         <>
+          <BonusText>{displayDiceBonus()}</BonusText>
           <DiceWrapper side={side}>
             <DiceIndicators dice={dice} side={side} />
           </DiceWrapper>
@@ -67,10 +67,14 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
 
 export default Hero
 
-const HeroContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  position: relative;
+const BonusText = styled.p`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 1rem;
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 `
 
 const DiceWrapper = styled.div<{ side: 'left' | 'right' }>`
@@ -85,6 +89,12 @@ const DiceWrapper = styled.div<{ side: 'left' | 'right' }>`
       : css`
           right: -16px;
         `}
+`
+
+const HeroContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  position: relative;
 `
 
 const HeroCurrentStats = styled(motion.div)<{ side: 'left' | 'right' }>`
@@ -124,3 +134,10 @@ const HeroCurrentStats = styled(motion.div)<{ side: 'left' | 'right' }>`
           transform: translateX(-120%);
         `}
 `
+
+const currentStatsVarinats = {
+  visible: {
+    opacity: 1,
+  },
+  hidden: { opacity: 0 },
+}

@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import React, { useContext, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components'
-import HeroStatsBorderLeft from '../../../assets/HeroStatsBorderLeft'
-import HeroStatsBorderRight from '../../../assets/HeroStatsBorderRight'
-import { useHerosContext } from '../../../hooks/useHerosContext'
-import { usePowerStats } from '../../../hooks/usePowerStats'
-import { IHero, PreparationT } from '../../../types/types'
+import HeroStatsBorderLeft from '_assets/HeroStatsBorderLeft'
+import HeroStatsBorderRight from '_assets/HeroStatsBorderRight'
+import { useHeroesContext } from '_hooks/useHeroesContext'
+import { usePowerStats } from '_hooks/usePowerStats'
+import { IHero, PreparationT } from '_types/types'
 import PreparationButton from './PreparationButton'
 
 const PREPARATION_NAMES: PreparationT[] = [
@@ -42,7 +42,7 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
 
   const {
     state: { isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   const heroStatsVariants = {
     visible: { opacity: 1 },

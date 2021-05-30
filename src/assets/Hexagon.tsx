@@ -14,7 +14,8 @@ const Hexagon = (props: React.SVGProps<SVGSVGElement>) => {
         d="M.644 8.289L14 .577 27.356 8.29V23.71L14 31.423.644 23.71V8.29z"
         fill={props.fill}
         fillOpacity={props.fillOpacity}
-        stroke={props.stroke}
+        stroke={props.stroke || 'none'}
+        strokeWidth={props.strokeWidth || 1}
       />
     </svg>
   )

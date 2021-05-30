@@ -2,10 +2,10 @@ import React, { useLayoutEffect, useState } from 'react'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import PageLoader from './components/PageLoader/PageLoader'
-import { HerosContextProvider } from './context/HerosContext'
-import Navigation from './navigation/Navigation'
-import { darkTheme } from './theme/theme'
+import PageLoader from '_components/PageLoader/PageLoader'
+import { HeroesContextProvider } from '_context/HeroesContext'
+import Navigation from '_navigation/Navigation'
+import { darkTheme } from '_theme/theme'
 
 const queryClient = new QueryClient()
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <ThemeProvider theme={darkTheme}>
-          <HerosContextProvider>
+          <HeroesContextProvider>
             <Helmet>
               <link rel="preconnect" href="https://fonts.gstatic.com" />
               <link
@@ -31,7 +31,7 @@ const App: React.FC = () => {
             {isLoading && <PageLoader />}
             <Navigation />
             <GlobalStyle />
-          </HerosContextProvider>
+          </HeroesContextProvider>
         </ThemeProvider>
       </HelmetProvider>
     </QueryClientProvider>

@@ -1,13 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../components/Header/Header'
+import Header from '_components/Header/Header'
 
 interface Props {}
 const MainTemplate: React.FC<Props> = ({ children }) => {
   return (
     <Container>
       <Header />
-
       {children}
     </Container>
   )

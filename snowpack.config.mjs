@@ -1,5 +1,22 @@
 /** @type {import("snowpack").SnowpackUserConfig } */
 export default {
+  alias: {
+    _api: './src/api',
+    _assets: './src/assets',
+    _components: './src/components',
+    _context: './src/context',
+    _helpers: './src/helpers',
+    _hooks: './src/hooks',
+    _navigation: './src/navigation',
+    _templates: './src/templates',
+    _theme: './src/theme',
+    _types: './src/types',
+    _views: './src/views',
+  },
+  env: {
+    HEROS_LOCAL_API_URL: 'http://localhost:5000/api/v1',
+    HEROS_API_URL: '',
+  },
   mount: {
     public: '/',
     src: '/dist',

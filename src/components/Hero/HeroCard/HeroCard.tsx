@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import unknowHero from '../../../assets/unknown.png'
+import unknowHero from '_assets/unknown.png'
 
 interface Props {
   heroImage?: string

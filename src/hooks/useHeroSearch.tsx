@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IHero } from '../types/types'
+import { IHero } from '_types/types'
 
 export const useHeroSearch = (heros?: IHero[], searchTerm?: string) => {
   const [filteredHeros, setFilteredHeros] = useState<IHero[] | undefined>()

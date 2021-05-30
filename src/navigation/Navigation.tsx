@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import HeroVsHeroView from '../views/HeroVsHeroView'
-import TeamVsTeamView from '../views/TeamVsTeamView'
+import HeroVsHeroView from '_views/HeroVsHeroView'
+import HeroesWikiView from '_views/HeroesWikiView'
 
 interface Props {}
 
@@ -12,8 +12,8 @@ const Navigation = (props: Props) => {
         <Route path="/hero-vs-hero">
           <HeroVsHeroView />
         </Route>
-        <Route path="/team-vs-team">
-          <TeamVsTeamView />
+        <Route path="/heroes-wiki">
+          <HeroesWikiView />
         </Route>
       </Switch>
     </Router>

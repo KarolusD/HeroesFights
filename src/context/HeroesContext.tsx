@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useReducer } from 'react'
-import { IHero } from '../types/types'
+import { IHero } from '_types/types'
 
-import herosReducer from '../helpers/herosReducer'
-import { Action } from './herosActions'
+import heroesReducer from '../helpers/heroesReducer'
+import { Action } from './heroesActions'
 
 export type State = {
   player1?: IHero
@@ -14,15 +14,15 @@ export type State = {
 
 type Dispatch = (action: Action) => void
 
-export const HerosContext =
+export const HeroesContext =
   createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
 
 interface Props {
   children: ReactNode
 }
 
-export const HerosContextProvider = ({ children }: Props) => {
-  const [state, dispatch] = useReducer(herosReducer, {
+export const HeroesContextProvider = ({ children }: Props) => {
+  const [state, dispatch] = useReducer(heroesReducer, {
     player1: undefined,
     player2: undefined,
     allHeros: [],
@@ -31,5 +31,7 @@ export const HerosContextProvider = ({ children }: Props) => {
   })
 
   const value = { state, dispatch }
-  return <HerosContext.Provider value={value}>{children}</HerosContext.Provider>
+  return (
+    <HeroesContext.Provider value={value}>{children}</HeroesContext.Provider>
+  )
 }

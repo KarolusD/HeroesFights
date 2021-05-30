@@ -1,10 +1,10 @@
 import { CheckOutlined } from '@ant-design/icons'
 import React, { ChangeEvent, useState } from 'react'
 import styled, { css } from 'styled-components'
-import placeholder from '../../../../assets/placeholder.png'
-import { useHerosContext } from '../../../../hooks/useHerosContext'
-import { useLazyImage } from '../../../../hooks/useLazyImage'
-import { IHero } from '../../../../types/types'
+import placeholder from '_assets/placeholder.png'
+import { useHeroesContext } from '_hooks/useHeroesContext'
+import { useLazyImage } from '_hooks/useLazyImage'
+import { IHero } from '_types/types'
 
 interface Props {
   isSelected: boolean
@@ -26,7 +26,7 @@ const HeroInGrid = ({ isSelected, hero, side, root }: Props) => {
     }
   )
 
-  const { dispatch } = useHerosContext()
+  const { dispatch } = useHeroesContext()
 
   const handlePlayerHeroSetting = () => {
     if (side === 'left') {

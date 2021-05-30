@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDimensions } from './useDimensions'
-import { useHerosContext } from './useHerosContext'
+import { useHeroesContext } from './useHeroesContext'
 
 export const useSideBar = () => {
   const ClOSE_SIDEBAR_MAX_WIDTH = 1365
   const { windowWidth } = useDimensions()
   const {
     state: { isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   const [isOpen, setIsOpen] = useState(ClOSE_SIDEBAR_MAX_WIDTH < windowWidth)
 

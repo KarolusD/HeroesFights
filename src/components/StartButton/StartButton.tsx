@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import React from 'react'
 import styled from 'styled-components'
-import { useHerosContext } from '../../hooks/useHerosContext'
+import { useHeroesContext } from '_hooks/useHeroesContext'
 
 interface Props {
   onClick?: () => void
@@ -20,7 +20,7 @@ const StartButton = ({ onClick }: Props) => {
 
   const {
     state: { isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   return (
     <Button

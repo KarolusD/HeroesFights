@@ -2,9 +2,9 @@ import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { useSwipeable } from 'react-swipeable'
 import styled, { css } from 'styled-components'
-import { useHerosContext } from '../../hooks/useHerosContext'
-import { useHeroSearch } from '../../hooks/useHeroSearch'
-import { useSideBar } from '../../hooks/useSideBar'
+import { useHeroesContext } from '_hooks/useHeroesContext'
+import { useHeroSearch } from '_hooks/useHeroSearch'
+import { useSideBar } from '_hooks/useSideBar'
 import HerosGrid from './HerosGrid/HerosGrid'
 import SearchBar from './SearchBar/SearchBar'
 
@@ -18,7 +18,7 @@ const SideBar = ({ side }: Props) => {
 
   const {
     state: { allHeros, isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   const { filteredHeros } = useHeroSearch(allHeros, searchTerm)
 

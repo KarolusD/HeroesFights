@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { useHerosContext } from '../../../hooks/useHerosContext'
-import { IHero } from '../../../types/types'
+import { useHeroesContext } from '_hooks/useHeroesContext'
+import { IHero } from '_types/types'
 import HeroInGrid from './HeroInGrid/HeroInGrid'
 
 interface Props {
@@ -14,7 +14,7 @@ const HerosGrid = ({ filteredHeros, side }: Props) => {
 
   const {
     state: { player1, player2 },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   return (
     <StyledGrid ref={gridRef as React.RefObject<HTMLDivElement>}>

@@ -3,14 +3,14 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
-import { useHerosContext } from '../../hooks/useHerosContext'
+import { useHeroesContext } from '_hooks/useHeroesContext'
 
 interface Props {}
 
 const Header: React.FC<Props> = () => {
   const {
     state: { isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
   const headerVariants = {
     visible: { opacity: 1, y: 0, display: 'flex' },
@@ -37,8 +37,8 @@ const Header: React.FC<Props> = () => {
             </StyledLink>
           </Item>
           <Item>
-            <StyledLink exact to="team-vs-team" activeClassName="selected">
-              Team vs Team
+            <StyledLink exact to="/heroes-wiki" activeClassName="selected">
+              Heroes wiki
             </StyledLink>
           </Item>
         </List>

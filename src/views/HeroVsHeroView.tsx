@@ -1,36 +1,37 @@
 import { motion } from 'framer-motion'
 import React, { useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
+import { getAllHeros } from '_api/herosApi'
 import styled, { ThemeContext } from 'styled-components'
-import Hexagon from '../assets/Hexagon'
-import Hero from '../components/Hero/Hero'
-import SideBar from '../components/SideBar/SideBar'
-import SnackBar from '../components/SnackBar/SnackBar'
-import StartButton from '../components/StartButton/StartButton'
-import { useHerosContext } from '../hooks/useHerosContext'
-import { useHerosFight } from '../hooks/useHerosFight'
-import { useMainHexIndicator } from '../hooks/useMainHexIndicator'
-import MainTemplate from '../templates/MainTemplate'
+import Hexagon from '_assets/Hexagon'
+import Hero from '_components/Hero/Hero'
+import SideBar from '_components/SideBar/SideBar'
+import SnackBar from '_components/SnackBar/SnackBar'
+import StartButton from '_components/StartButton/StartButton'
+import { useHeroesContext } from '_hooks/useHeroesContext'
+import { useHeroesFight } from '_hooks/useHeroesFight'
+import { useMainHexIndicator } from '_hooks/useMainHexIndicator'
+import MainTemplate from '_templates/MainTemplate'
 
 interface Props {}
 
 const HeroVsHeroView = (props: Props) => {
   const theme = useContext(ThemeContext)
-  const { isLoading, error, data } = useQuery('heros', async () => {
-    const response = await fetch('http://localhost:5000/api/v1/heros')
-    return await response.json()
-  })
+  const { isLoading, error, data } = useQuery('heros', getAllHeros)
 
   const {
     dispatch,
     state: { player1, player2, isHerosFighting },
-  } = useHerosContext()
+  } = useHeroesContext()
 
-  const { currentPowerStats, roundWinner } = useHerosFight(player1, player2)
-
+  const { currentPowerStats, roundWinner, roundDiceBonus } = useHeroesFight(
+    player1,
+    player2
+  )
+  console.log(roundDiceBonus, 'winner i bonus')
   const { mainHexColor, mainHexLabel } = useMainHexIndicator(
     roundWinner,
-    currentPowerStats
+    roundDiceBonus
   )
   useEffect(() => {
     dispatch({ type: 'SET_ALL_HEROS', payload: { allHeros: data } })
@@ -50,17 +51,6 @@ const HeroVsHeroView = (props: Props) => {
         setErrorOcc(false)
       }, 3000)
     }
-  }
-
-  const bigHexagonVariants = {
-    visible: {
-      opacity: 1,
-      scale: 1,
-    },
-    hidden: {
-      opacity: 0,
-      scale: 0,
-    },
   }
 
   return (
@@ -83,14 +73,30 @@ const HeroVsHeroView = (props: Props) => {
             vs
           </Versus>
           {isHerosFighting && (
-            <HexagonWrapper
-              animate="visible"
-              initial="hidden"
-              variants={bigHexagonVariants}
-              transition={{ type: 'spring', duration: 0.3, delay: 1.1 }}
-            >
-              <StyledHexagon fill={mainHexColor} width={92} height={92} />
-            </HexagonWrapper>
+            <>
+              <FightText
+                animate="visible"
+                initial="hidden"
+                variants={fightTextVariants}
+                transition={{ type: 'ease-out', duration: 1.4, delay: 1.4 }}
+              >
+                Fight!
+              </FightText>
+              <HexagonWrapper
+                animate="visible"
+                initial="hidden"
+                variants={bigHexagonVariants}
+                transition={{ type: 'spring', duration: 0.3, delay: 1.1 }}
+              >
+                <StyledHexagon fill={mainHexColor} width={92} height={92} />
+                <StyledHexagonBorder
+                  stroke={mainHexColor}
+                  width={92}
+                  height={92}
+                />
+                <HexagonText>{mainHexLabel}</HexagonText>
+              </HexagonWrapper>
+            </>
           )}
           <Hero
             side="right"
@@ -165,3 +171,52 @@ const StyledHexagon = styled(Hexagon)`
     transition: 250ms ease !important;
   }
 `
+
+const StyledHexagonBorder = styled(Hexagon)`
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transform: ${({ stroke, theme }) =>
+    stroke !== theme.colors.darkGray ? 'scale(1.4)' : 'scale(1)'};
+  transition: 250ms ease;
+`
+
+const HexagonText = styled.h3`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 2rem;
+  font-weight: 600;
+  position: absolute;
+  top: 1.4rem;
+  left: 1.4rem;
+`
+
+const FightText = styled(motion.h3)`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 4rem;
+  font-weight: 600;
+  position: absolute;
+  top: 20%;
+  left: calc(50% - 100px);
+`
+
+const bigHexagonVariants = {
+  visible: {
+    opacity: 1,
+    scale: 1,
+  },
+  hidden: {
+    opacity: 0,
+    scale: 0,
+  },
+}
+
+const fightTextVariants = {
+  visible: {
+    scale: [3, 1, 0.5],
+    opacity: [0, 1, 0],
+  },
+  hidden: {
+    scale: 0.5,
+    opacity: 0,
+  },
+}

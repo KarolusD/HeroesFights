@@ -1,7 +1,7 @@
-import { State } from '../context/HerosContext'
-import { Action } from '../context/herosActions'
+import { State } from '_context/HeroesContext'
+import { Action } from '_context/heroesActions'
 
-const herosReducer = (state: State, action: Action) => {
+const heroesReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'SET_PLAYER_1': {
       return {
@@ -39,12 +39,11 @@ const herosReducer = (state: State, action: Action) => {
     }
 
     case 'ADD_HERO_POINTS': {
-      const { player, bonus, points } = action.payload
+      const { player, points } = action.payload
       return {
         ...state,
         [player]: {
           ...state[player],
-          bonus,
           points,
         },
       }
@@ -81,12 +80,13 @@ const herosReducer = (state: State, action: Action) => {
     }
 
     case 'UPDATE_DICE_COUNT': {
-      const { player, diceCount } = action.payload
+      const { player, diceCount, diceBonus } = action.payload
       return {
         ...state,
         [player]: {
           ...state[player],
           diceCount,
+          diceBonus,
         },
       }
     }
@@ -104,4 +104,4 @@ const herosReducer = (state: State, action: Action) => {
   }
 }
 
-export default herosReducer
+export default heroesReducer
