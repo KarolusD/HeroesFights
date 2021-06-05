@@ -1,23 +1,18 @@
 import { useBox } from '@react-three/cannon'
-import { Box } from '@react-three/drei'
-import { useFrame, useLoader } from '@react-three/fiber'
-import { delay } from '_helpers/delay'
+import { useFrame } from '@react-three/fiber'
 import React, { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
-import { Euler, Vector3 } from 'three'
+import { Euler } from 'three'
 
 interface IDie {
-  castShadow?: boolean
-  walls: string[]
   impulse: number[]
   position: number[]
   rotation?: number[]
 }
 
-const SIDES = 6
 const POSSIBLE_ROTATIONS = [0, -Math.PI / 2, -Math.PI, Math.PI / 2, Math.PI]
 
-const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
+export const useDie = ({ impulse, position, rotation, ...props }: IDie) => {
+  const [faceUp, setFaceUp] = useState<null | number>(null)
   const [dieLanded, setDieLanded] = useState(false)
   const [ref, api] = useBox(() => ({
     mass: 1,
@@ -43,8 +38,7 @@ const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
       time = clock.elapsedTime
       previousPosition = positionRef
     }
-    // console.log(ref.current?.position, 'current pos')
-    // console.log(previousPosition, 'prev')
+
     if (
       !dieLanded &&
       previousPosition &&
@@ -53,8 +47,9 @@ const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
       previousPosition.current[2] === positionRef.current[2]
     ) {
       const face = whichFaceIsUp(ref.current?.rotation)
-      console.log(face, '<--- face')
+      setFaceUp(face)
       setDieLanded(true)
+      console.log(face, '<--- face')
     }
   })
 
@@ -71,7 +66,7 @@ const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
     const rotationX = closestToPossibleRotation(rotation?.x)
     const rotationZ = closestToPossibleRotation(rotation?.z)
 
-    // refactor this to something shorter
+    // TODO: refactor this to something shorter...
     switch (rotationZ) {
       case 0: // 0 deg
         if (rotationX === Math.PI / 2) return 2
@@ -91,13 +86,13 @@ const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
         if (Math.abs(rotationX) === Math.PI) return 6
         if (rotationX === -Math.PI / 2) return 5
         break
-      case Math.PI: // 180 or -180 deg
+      case Math.PI: // 180 deg
         if (rotationX === Math.PI / 2) return 2
         if (rotationX === 0) return 4
         if (rotationX === Math.PI || rotationX === -Math.PI) return 3
         if (rotationX === -Math.PI / 2) return 5
         break
-      case -Math.PI:
+      case -Math.PI: // -180 deg
         if (rotationX === Math.PI / 2) return 2
         if (rotationX === 0) return 4
         if (rotationX === Math.PI || rotationX === -Math.PI) return 3
@@ -109,17 +104,4 @@ const D6 = ({ walls, impulse, position, rotation, ...props }: IDie) => {
     )
     return 3 // default value for a die which is not possible to recognize
   }
-
-  return (
-    <Box args={[1, 1, 1]} ref={ref} castShadow receiveShadow>
-      {[...Array(SIDES)].map((_, i) => {
-        const texture = useLoader(THREE.TextureLoader, walls[i])
-        return (
-          <meshPhongMaterial attachArray="material" map={texture} key={i} />
-        )
-      })}
-    </Box>
-  )
 }
-
-export default D6
