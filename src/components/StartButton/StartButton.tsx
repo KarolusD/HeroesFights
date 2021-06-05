@@ -19,13 +19,13 @@ const StartButton = ({ onClick }: Props) => {
   }
 
   const {
-    state: { isHerosFighting },
+    state: { isHeroesFighting },
   } = useHeroesContext()
 
   return (
     <Button
-      animate={isHerosFighting ? 'hidden' : 'visible'}
-      initial={isHerosFighting ? 'hidden' : 'visible'}
+      animate={isHeroesFighting ? 'hidden' : 'visible'}
+      initial={isHeroesFighting ? 'hidden' : 'visible'}
       onClick={onClick}
       transition={startButtonTranstion}
       variants={startButtonVariants}

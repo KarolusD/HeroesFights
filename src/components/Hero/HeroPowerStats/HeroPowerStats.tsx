@@ -41,7 +41,7 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
   const theme = useContext(ThemeContext)
 
   const {
-    state: { isHerosFighting },
+    state: { isHeroesFighting },
   } = useHeroesContext()
 
   const heroStatsVariants = {
@@ -56,8 +56,8 @@ const HeroPowerStats = ({ playerHero, side }: Props) => {
 
   return (
     <HeroStats
-      animate={isHerosFighting ? 'hidden' : 'visible'}
-      initial={isHerosFighting ? 'hidden' : 'visible'}
+      animate={isHeroesFighting ? 'hidden' : 'visible'}
+      initial={isHeroesFighting ? 'hidden' : 'visible'}
       transition={heroStatsTransition}
       variants={heroStatsVariants}
     >

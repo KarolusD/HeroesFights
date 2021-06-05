@@ -10,7 +10,6 @@ interface Props {
 
 const DiceIndicator = ({ dice, side }: Props) => {
   const theme = useContext(ThemeContext)
-  console.log(theme, 'DiceIndicator')
   const wrapperVariants = {
     hidden: { opacity: 0 },
     visible: {

@@ -21,18 +21,17 @@ const HeroVsHeroView = (props: Props) => {
 
   const {
     dispatch,
-    state: { player1, player2, isHerosFighting },
+    state: { player1, player2, isHeroesFighting },
   } = useHeroesContext()
 
-  const { currentPowerStats, roundWinner, roundDiceBonus } = useHeroesFight(
-    player1,
-    player2
-  )
-  console.log(roundDiceBonus, 'winner i bonus')
+  const { currentPowerStats, roundWinner, roundDiceBonus, isRollingDice } =
+    useHeroesFight(player1, player2)
+
   const { mainHexColor, mainHexLabel } = useMainHexIndicator(
     roundWinner,
     roundDiceBonus
   )
+
   useEffect(() => {
     dispatch({ type: 'SET_ALL_HEROS', payload: { allHeros: data } })
   }, [data, dispatch])
@@ -57,9 +56,9 @@ const HeroVsHeroView = (props: Props) => {
     <MainTemplate>
       <SnackBar isVisible={errorOcc} text={errorMsg} />
       <SideBar side="left" />
-      <MainSection isHerosFighting={isHerosFighting}>
+      <MainSection isHeroesFighting={isHeroesFighting}>
         <FlexWrapper
-          animate={isHerosFighting ? { height: '90%' } : { height: 'auto' }}
+          animate={isHeroesFighting ? { height: '90%' } : { height: 'auto' }}
         >
           <Hero
             side="left"
@@ -67,18 +66,18 @@ const HeroVsHeroView = (props: Props) => {
             currentPowerStats={currentPowerStats}
           />
           <Versus
-            animate={isHerosFighting ? { opacity: 0 } : { opacity: 1 }}
+            animate={isHeroesFighting ? { opacity: 0 } : { opacity: 1 }}
             transition={{ type: 'ease', duration: '0.2' }}
           >
             vs
           </Versus>
-          {isHerosFighting && (
+          {isHeroesFighting && (
             <>
               <FightText
                 animate="visible"
                 initial="hidden"
                 variants={fightTextVariants}
-                transition={{ type: 'ease-out', duration: 1.4, delay: 1.4 }}
+                transition={{ type: 'ease-out', duration: 0.8, delay: 1.2 }}
               >
                 Fight!
               </FightText>
@@ -113,7 +112,7 @@ const HeroVsHeroView = (props: Props) => {
 
 export default HeroVsHeroView
 
-const MainSection = styled.section<{ isHerosFighting: boolean }>`
+const MainSection = styled.section<{ isHeroesFighting: boolean }>`
   position: relative;
   min-height: 600px;
   height: 100vh;
@@ -126,7 +125,8 @@ const MainSection = styled.section<{ isHerosFighting: boolean }>`
   }
 
   @media (max-width: 768px) {
-    padding: ${({ isHerosFighting }) => (isHerosFighting ? '0' : '16vh 12vw')};
+    padding: ${({ isHeroesFighting }) =>
+      isHeroesFighting ? '0' : '16vh 12vw'};
   }
 `
 
@@ -175,12 +175,11 @@ const StyledHexagon = styled(Hexagon)`
 const StyledHexagonBorder = styled(Hexagon)`
   position: absolute;
   top: 1px;
-  left: 1px;
+  left: 1.25px;
   transform: ${({ stroke, theme }) =>
     stroke !== theme.colors.darkGray ? 'scale(1.4)' : 'scale(1)'};
   transition: 250ms ease;
 `
-
 const HexagonText = styled.h3`
   color: ${({ theme }) => theme.colors.text};
   font-size: 2rem;

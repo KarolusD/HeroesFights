@@ -17,7 +17,7 @@ const SideBar = ({ side }: Props) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const {
-    state: { allHeros, isHerosFighting },
+    state: { allHeros, isHeroesFighting },
   } = useHeroesContext()
 
   const { filteredHeros } = useHeroSearch(allHeros, searchTerm)
@@ -80,7 +80,7 @@ const SideBar = ({ side }: Props) => {
       </Container>
       <SideBarButton
         $isOpen={isOpen}
-        $isVisible={!isOpen && !isHerosFighting}
+        $isVisible={!isOpen && !isHeroesFighting}
         onClick={() => setIsOpen(!isOpen)}
         side={side}
       >

@@ -8,7 +8,7 @@ export type State = {
   player1?: IHero
   player2?: IHero
   allHeros?: IHero[]
-  isHerosFighting: boolean
+  isHeroesFighting: boolean
   round: number
 }
 
@@ -26,7 +26,7 @@ export const HeroesContextProvider = ({ children }: Props) => {
     player1: undefined,
     player2: undefined,
     allHeros: [],
-    isHerosFighting: false,
+    isHeroesFighting: false,
     round: 0,
   })
 

@@ -17,7 +17,7 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
   const { heroTransition, heroVariants } = useHeroAnimation(side)
 
   const {
-    state: { player1, player2, isHerosFighting },
+    state: { player1, player2, isHeroesFighting },
   } = useHeroesContext()
 
   const playerHero = side === 'left' ? player1 : player2
@@ -30,7 +30,7 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
 
   return (
     <HeroContainer
-      animate={isHerosFighting ? 'fighting' : 'default'}
+      animate={isHeroesFighting ? 'fighting' : 'default'}
       initial="default"
       transition={heroTransition}
       variants={heroVariants}
@@ -41,7 +41,7 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
         heroBiography={playerHero?.biography}
         heroImage={playerHero?.images?.lg}
       />
-      {isHerosFighting && (
+      {isHeroesFighting && (
         <>
           <BonusText>{displayDiceBonus()}</BonusText>
           <DiceWrapper side={side}>
@@ -69,7 +69,7 @@ export default Hero
 
 const BonusText = styled.p`
   color: ${({ theme }) => theme.colors.text};
-  font-size: 1rem;
+  font-size: 1.2rem;
   position: absolute;
   top: -40px;
   left: 50%;

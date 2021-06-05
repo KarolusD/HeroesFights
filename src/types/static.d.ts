@@ -56,4 +56,15 @@ declare module '*.png' {
   export default ref
 }
 
+declare module JSX {
+  interface IntrinsicElements {
+    group: any
+    geometry: any
+    lineBasicMaterial: any
+    mesh: any
+    octahedronGeometry: any
+    meshBasicMaterial: any
+  }
+}
+
 /* CUSTOM: ADD YOUR OWN HERE */

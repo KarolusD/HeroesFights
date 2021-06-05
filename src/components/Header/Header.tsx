@@ -9,7 +9,7 @@ interface Props {}
 
 const Header: React.FC<Props> = () => {
   const {
-    state: { isHerosFighting },
+    state: { isHeroesFighting },
   } = useHeroesContext()
 
   const headerVariants = {
@@ -24,7 +24,7 @@ const Header: React.FC<Props> = () => {
 
   return (
     <TopBar
-      animate={isHerosFighting ? 'hidden' : 'visible'}
+      animate={isHeroesFighting ? 'hidden' : 'visible'}
       transition={headerTransition}
       variants={headerVariants}
     >

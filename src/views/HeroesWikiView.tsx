@@ -1,5 +1,5 @@
 import React from 'react'
-import DiceScene from '_components/Dice/DiceScene'
+import DiceScene from '_components/DiceScene/DiceScene'
 import MainTemplate from '_templates/MainTemplate'
 
 interface Props {}

@@ -27,14 +27,14 @@ const heroesReducer = (state: State, action: Action) => {
     case 'START_HEROS_FIGHT': {
       return {
         ...state,
-        isHerosFighting: true,
+        isHeroesFighting: true,
       }
     }
 
     case 'END_HEROS_FIGHT': {
       return {
         ...state,
-        isHerosFighting: false,
+        isHeroesFighting: false,
       }
     }
 

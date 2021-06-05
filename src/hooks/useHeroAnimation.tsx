@@ -22,7 +22,7 @@ export const useHeroAnimation = (side: 'left' | 'right') => {
       heroScale.set(1)
       heroHeight.set('auto')
     }
-  }, [heroX, heroY, heroScale, heroHeight, side, windowWidth])
+  }, [side, windowWidth, windowHeight])
 
   const heroVariants = {
     default: {
