@@ -7,7 +7,7 @@ interface Props {}
 const HeroesWikiView = (props: Props) => {
   return (
     <MainTemplate>
-      <DiceScene />
+      <DiceScene player="player2" diceNumber={1} />
     </MainTemplate>
   )
 }

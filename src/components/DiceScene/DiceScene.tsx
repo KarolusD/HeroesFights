@@ -52,9 +52,9 @@ const DiceScene = ({ diceNumber, player }: DiceSceneProps) => {
 
   const handleDieImpulse = () => {
     const impX =
-      player === 'player1' ? randomNumber(10, 25) : randomNumber(-25, -10) // how strong are the dice rolled (left/right)
+      player === 'player1' ? randomNumber(5, 20) : randomNumber(-20, -5) // how strong are the dice rolled (left/right)
     const impY = 0
-    const impZ = randomNumber(-1, 1) // direction of the roll (up/down)
+    const impZ = randomNumber(-2, 2) // direction of the roll (up/down)
 
     return [impX, impY, impZ]
   }
@@ -94,11 +94,16 @@ const DiceScene = ({ diceNumber, player }: DiceSceneProps) => {
           position={[0, 0, window.innerHeight / 2 / 75]}
           rotation={[0, Math.PI, 0]}
         />
-        {[...Array(diceNumber)].map(() => {
+        {[...Array(diceNumber)].map((_, i) => {
           let dieImpulse = handleDieImpulse()
           let diePosition = handleDiePosition()
           return (
-            <D6 walls={dieWalls} impulse={dieImpulse} position={diePosition} />
+            <D6
+              walls={dieWalls}
+              impulse={dieImpulse}
+              position={diePosition}
+              key={i}
+            />
           )
         })}
       </Physics>

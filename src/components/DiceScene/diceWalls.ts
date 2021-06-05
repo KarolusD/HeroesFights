@@ -12,5 +12,5 @@ import r04 from '_assets/redDice/red-dice-wall-04.svg'
 import r05 from '_assets/redDice/red-dice-wall-05.svg'
 import r06 from '_assets/redDice/red-dice-wall-06.svg'
 
-export const blueWalls = [b01, b02, b03, b04, b05, b06]
-export const redWalls = [r01, r02, r03, r04, r05, r06]
+export const blueWalls = [b01, b06, b03, b04, b05, b02] // correct order for 3d object
+export const redWalls = [r01, r06, r03, r04, r05, r02]
