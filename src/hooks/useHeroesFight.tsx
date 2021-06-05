@@ -50,9 +50,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
             type: 'UPDATE_ROUND_NUMBER',
             payload: { round: idx + 1 },
           })
-          console.log('heeeere?')
 
-          // setTimeout(() => {
           await delay(500)
           // updating dice indicator and setting round winner
           if (
@@ -110,7 +108,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
               },
             })
           }
-          // }, 1000)
+
           await delay(500)
           setRoundWinner('')
         }
