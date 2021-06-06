@@ -44,7 +44,7 @@ const DiceScene = ({ diceNumber, player }: DiceSceneProps) => {
 
   const handleDiePosition = () => {
     const posX = player === 'player1' ? -10 : 10 // how far dice are on left/right
-    const posY = randomNumber(5, 10) // how high the dice are
+    const posY = randomNumber(3, 5) // how high the dice are
     const posZ = randomNumber(-5, 5) // how spread out the dice are
 
     return [posX, posY, posZ]
