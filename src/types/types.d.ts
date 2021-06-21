@@ -42,8 +42,8 @@ export interface IHero {
   preparantion: PreparationT
   calculatedPowerStats: IPowerStats
   diceBonus?: number
+  dicePoints?: number[]
   diceCount: boolean[]
-  dicePoints: number[]
 }
 
 export type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'

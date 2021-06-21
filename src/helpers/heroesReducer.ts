@@ -39,17 +39,15 @@ const heroesReducer = (state: State, action: Action) => {
     }
 
     case 'ADD_HERO_POINTS': {
-      const player = action.payload.player as keyof State
-      const updatePoints = () => {
-        if (state && player && state[player] && state[player].dicePoints) {
-          const { dicePoints } = state[player]
-        }
-      }
+      const { player, points } = action.payload
+
       return {
         ...state,
         [player]: {
           ...state[player],
-          dicePoints: [...state[player].dicePoints, points],
+          dicePoints: state[player]?.dicePoints
+            ? [...state[player]?.dicePoints!, points]
+            : [points],
         },
       }
     }

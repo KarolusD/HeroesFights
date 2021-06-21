@@ -37,7 +37,7 @@ const StartButton = ({ onClick }: Props) => {
 
 export default StartButton
 
-const Button = styled(motion.button)`
+export const Button = styled(motion.button)`
   background: transparent;
   border: none;
   box-shadow: none;
@@ -82,10 +82,10 @@ const Button = styled(motion.button)`
     clip-path: polygon(
       0% 0%,
       0% 100%,
-      0.5% 100%,
-      0.5% 2%,
-      99.5% 2%,
-      99.5% 98%,
+      1% 100%,
+      1% 2%,
+      99% 2%,
+      99% 98%,
       0% 98%,
       0% 100%,
       100% 100%,

@@ -2,9 +2,8 @@ import React, { useContext } from 'react'
 import Loader from 'react-loader-spinner'
 import styled, { ThemeContext } from 'styled-components'
 
-interface Props {}
 
-const PageLoader = (props: Props) => {
+const PageLoader = () => {
   const theme = useContext(ThemeContext)
 
   return (

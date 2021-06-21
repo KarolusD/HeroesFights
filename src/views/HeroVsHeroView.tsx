@@ -2,29 +2,35 @@ import { motion } from 'framer-motion'
 import React, { useContext, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getAllHeros } from '_api/herosApi'
-import styled, { ThemeContext } from 'styled-components'
+import styled, { css, keyframes, ThemeContext } from 'styled-components'
 import Hexagon from '_assets/Hexagon'
 import Hero from '_components/Hero/Hero'
 import SideBar from '_components/SideBar/SideBar'
 import SnackBar from '_components/SnackBar/SnackBar'
-import StartButton from '_components/StartButton/StartButton'
+import StartButton, { Button } from '_components/StartButton/StartButton'
 import { useHeroesContext } from '_hooks/useHeroesContext'
 import { useHeroesFight } from '_hooks/useHeroesFight'
 import { useMainHexIndicator } from '_hooks/useMainHexIndicator'
 import MainTemplate from '_templates/MainTemplate'
+import DiceScene from '_components/DiceScene/DiceScene'
+import { IHero } from '_types/types'
 
-interface Props {}
-
-const HeroVsHeroView = (props: Props) => {
-  const theme = useContext(ThemeContext)
+const HeroVsHeroView = () => {
   const { isLoading, error, data } = useQuery('heros', getAllHeros)
+
+  const [isRolling, setIsRolling] = useState(false)
+  const [isScoreReady, setIsScoreReady] = useState(false)
+  const [diceLandedCount, setDiceLandedCount] = useState(0)
+
+  const [errorOcc, setErrorOcc] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const {
     dispatch,
     state: { player1, player2, isHeroesFighting },
   } = useHeroesContext()
 
-  const { currentPowerStats, roundWinner, roundDiceBonus, isRollingDice } =
+  const { currentPowerStats, roundWinner, roundDiceBonus, isRollingDiceReady } =
     useHeroesFight(player1, player2)
 
   const { mainHexColor, mainHexLabel } = useMainHexIndicator(
@@ -34,10 +40,14 @@ const HeroVsHeroView = (props: Props) => {
 
   useEffect(() => {
     dispatch({ type: 'SET_ALL_HEROS', payload: { allHeros: data } })
-  }, [data, dispatch])
-
-  const [errorOcc, setErrorOcc] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
+    if (error) {
+      setErrorOcc(true)
+      setErrorMsg('Unable to download heroes data, please try again later :(')
+    } else {
+      setErrorOcc(false)
+      setErrorMsg('')
+    }
+  }, [error, data, dispatch])
 
   const handleFightStart = () => {
     if (player1 && player2) {
@@ -48,7 +58,38 @@ const HeroVsHeroView = (props: Props) => {
       setErrorMsg('You have to choose both players to start fighting!')
       setTimeout(() => {
         setErrorOcc(false)
+        setErrorMsg('')
       }, 3000)
+    }
+  }
+
+  const updateDice = (faceUp: number) => {
+    setDiceLandedCount((count) => count + 1)
+  }
+
+  const displayScore = (player: 'player1' | 'player2') => {
+    let currPlayer = player === 'player1' ? player1 : player2
+    if (currPlayer && currPlayer.dicePoints) {
+      let diceCount = currPlayer.dicePoints.length
+      let diceBonus = currPlayer.diceBonus ? currPlayer.diceBonus : 0
+
+      let result = 0
+      return (
+        <Score player={player}>
+          {currPlayer.dicePoints.map((dice, idx) => {
+            result += dice
+            let specialChar = '+ '
+
+            if (diceCount - 1 === idx && diceBonus === 0) {
+              specialChar = `= ${result}`
+            }
+
+            return `${dice} ${specialChar}`
+          })}
+          {diceBonus !== 0 && <span>{`${diceBonus}`}</span>}
+          {diceBonus !== 0 && ` = ${result}`}
+        </Score>
+      )
     }
   }
 
@@ -58,11 +99,12 @@ const HeroVsHeroView = (props: Props) => {
       <SideBar side="left" />
       <MainSection isHeroesFighting={isHeroesFighting}>
         <FlexWrapper
-          animate={isHeroesFighting ? { height: '90%' } : { height: 'auto' }}
+          animate={isHeroesFighting ? { height: '640px' } : { height: 'auto' }}
         >
           <Hero
             side="left"
             dice={player1?.diceCount}
+            isRollingDiceReady={isRollingDiceReady}
             currentPowerStats={currentPowerStats}
           />
           <Versus
@@ -82,10 +124,10 @@ const HeroVsHeroView = (props: Props) => {
                 Fight!
               </FightText>
               <HexagonWrapper
-                animate="visible"
+                animate={isRollingDiceReady ? 'hidden' : 'visible'}
                 initial="hidden"
                 variants={bigHexagonVariants}
-                transition={{ type: 'spring', duration: 0.3, delay: 1.1 }}
+                transition={{ type: 'spring', duration: 0.3, delay: 1 }}
               >
                 <StyledHexagon fill={mainHexColor} width={92} height={92} />
                 <StyledHexagonBorder
@@ -100,12 +142,40 @@ const HeroVsHeroView = (props: Props) => {
           <Hero
             side="right"
             dice={player2?.diceCount}
+            isRollingDiceReady={isRollingDiceReady}
             currentPowerStats={currentPowerStats}
           />
         </FlexWrapper>
         <StartButton onClick={handleFightStart} />
+        {isRollingDiceReady && (
+          <RollingButton
+            animate={isRollingDiceReady && !isRolling ? 'visible' : 'hidden'}
+            initial="hidden"
+            onClick={() => setIsRolling(true)}
+            transition={{ type: 'ease', duration: 0.5, delay: 1 }}
+            variants={rollingButtonVariants}
+          >
+            Roll dice
+          </RollingButton>
+        )}
       </MainSection>
       <SideBar side="right" />
+      {isRolling && (
+        <DiceSceneWrapper>
+          <DiceScene
+            diceLandedCount={diceLandedCount}
+            setIsScoreReady={setIsScoreReady}
+            player1DiceNumber={player1?.diceCount?.filter((d) => d).length}
+            player2DiceNumber={player2?.diceCount?.filter((d) => d).length}
+            updateDice={updateDice}
+          />
+        </DiceSceneWrapper>
+      )}
+      {isScoreReady && (
+        <ScoreWrapper>
+          {displayScore('player1')} {displayScore('player2')}
+        </ScoreWrapper>
+      )}
     </MainTemplate>
   )
 }
@@ -130,11 +200,19 @@ const MainSection = styled.section<{ isHeroesFighting: boolean }>`
   }
 `
 
+const DiceSceneWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+`
+
 const FlexWrapper = styled(motion.div)`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin-bottom: 24%;
+  margin-bottom: 160px;
   height: auto;
 
   @media (max-width: 768px) {
@@ -198,6 +276,31 @@ const FightText = styled(motion.h3)`
   left: calc(50% - 100px);
 `
 
+const RollingButton = styled(Button)`
+  && {
+    position: absolute;
+    top: 45%;
+  }
+`
+
+const ScoreWrapper = styled.div`
+  font-size: 3rem;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`
+
+const Score = styled.p<{ player: 'player1' | 'player2' }>`
+  color: ${({ theme, player }) =>
+    player === 'player1' ? theme.colors.blue : theme.colors.red};
+  font-size: 3rem;
+  text-align: center;
+  & > span {
+    color: ${({ theme }) => theme.colors.success};
+  }
+`
+
 const bigHexagonVariants = {
   visible: {
     opacity: 1,
@@ -216,6 +319,15 @@ const fightTextVariants = {
   },
   hidden: {
     scale: 0.5,
+    opacity: 0,
+  },
+}
+
+const rollingButtonVariants = {
+  visible: {
+    opacity: 1,
+  },
+  hidden: {
     opacity: 0,
   },
 }

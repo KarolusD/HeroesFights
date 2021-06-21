@@ -10,7 +10,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
   const [currentPowerStats, setCurrentPowerStats] = useState('')
   const [roundWinner, setRoundWinner] = useState('')
   const [roundDiceBonus, setRoundDiceBonus] = useState(0)
-  const [isRollingDice, setIsRollingDice] = useState(false)
+  const [isRollingDiceReady, setIsRollingDiceReady] = useState(false)
 
   const {
     dispatch,
@@ -112,7 +112,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
           await delay(500)
           setRoundWinner('')
         }
-        setIsRollingDice(true)
+        setIsRollingDiceReady(true)
       }
     }
 
@@ -120,5 +120,5 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHeroesFighting])
 
-  return { currentPowerStats, roundWinner, roundDiceBonus, isRollingDice }
+  return { currentPowerStats, roundWinner, roundDiceBonus, isRollingDiceReady }
 }

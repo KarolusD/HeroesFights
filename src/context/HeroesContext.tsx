@@ -14,6 +14,14 @@ export type State = {
 
 type Dispatch = (action: Action) => void
 
+const initialState: State = {
+  player1: undefined,
+  player2: undefined,
+  allHeros: [],
+  isHeroesFighting: false,
+  round: 0,
+}
+
 export const HeroesContext =
   createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
 
@@ -22,13 +30,7 @@ interface Props {
 }
 
 export const HeroesContextProvider = ({ children }: Props) => {
-  const [state, dispatch] = useReducer(heroesReducer, {
-    player1: undefined,
-    player2: undefined,
-    allHeros: [],
-    isHeroesFighting: false,
-    round: 0,
-  })
+  const [state, dispatch] = useReducer(heroesReducer, initialState)
 
   const value = { state, dispatch }
   return (

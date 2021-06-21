@@ -1,6 +1,7 @@
 import { useBox } from '@react-three/cannon'
 import { useFrame } from '@react-three/fiber'
 import React, { useEffect, useRef, useState } from 'react'
+import { Euler } from 'three'
 
 interface IDie {
   impulse: number[]
@@ -12,15 +13,11 @@ const POSSIBLE_ROTATIONS = [0, -Math.PI / 2, -Math.PI, Math.PI / 2, Math.PI]
 
 export const useDie = ({ impulse, position, rotation }: IDie) => {
   const [faceUp, setFaceUp] = useState<number | undefined>()
-  const [dieLanded, setDieLanded] = useState(false)
+  const [isDieLanded, setIsDieLanded] = useState(false)
   const [ref, api] = useBox(() => ({
     mass: 1,
     position: position,
-    rotation: rotation || [
-      Math.random() * Math.PI,
-      Math.random() * Math.PI,
-      Math.random() * Math.PI,
-    ],
+    rotation: rotation || [Math.random(), Math.random(), Math.random()],
   }))
 
   const positionRef = useRef([0, 0, 0])
@@ -42,15 +39,16 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
 
     // if die stops rolling check which face is up
     if (
-      !dieLanded &&
+      !isDieLanded &&
       prevPosition &&
       prevPosition.current[0] === positionRef.current[0] &&
       prevPosition.current[1] === positionRef.current[1] &&
       prevPosition.current[2] === positionRef.current[2]
     ) {
-      const face = whichFaceIsUp(positionRef.current)
+      const face = whichFaceIsUp(ref.current?.rotation)
       setFaceUp(face)
-      setDieLanded(true)
+      setIsDieLanded(true)
+
       console.log(face, '<--- face')
     }
   })
@@ -64,9 +62,9 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
     })
   }
 
-  const whichFaceIsUp = (rotation: number[]) => {
-    const rotationX = closestToPossibleRotation(rotation[0])
-    const rotationZ = closestToPossibleRotation(rotation[2])
+  const whichFaceIsUp = (rotation: Euler | undefined) => {
+    const rotationX = closestToPossibleRotation(rotation?.x)
+    const rotationZ = closestToPossibleRotation(rotation?.z)
 
     // TODO: refactor this to something shorter...
     switch (rotationZ) {
@@ -104,9 +102,9 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
         console.error(
           'Die was not recognized, default value for not recognized die is 3'
         )
-        return 3 // this should never happen, but just is case...
     }
+    return 3 // this should never happen, but just is case...
   }
 
-  return { faceUp, ref }
+  return { faceUp, isDieLanded, ref }
 }

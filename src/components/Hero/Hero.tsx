@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import React from 'react'
-import styled, { css } from 'styled-components'
+import React, { useState } from 'react'
+import styled, { css, keyframes } from 'styled-components'
+import DiceScene from '_components/DiceScene/DiceScene'
 import { useHeroAnimation } from '_hooks/useHeroAnimation'
 import { useHeroesContext } from '_hooks/useHeroesContext'
 import DiceIndicators from '../DiceIndicators/DiceIndicator'
@@ -10,10 +11,11 @@ import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
 interface Props {
   currentPowerStats: string
   dice?: boolean[]
+  isRollingDiceReady: boolean
   side: 'left' | 'right'
 }
 
-const Hero = ({ currentPowerStats, dice, side }: Props) => {
+const Hero = ({ currentPowerStats, isRollingDiceReady, dice, side }: Props) => {
   const { heroTransition, heroVariants } = useHeroAnimation(side)
 
   const {
@@ -21,6 +23,7 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
   } = useHeroesContext()
 
   const playerHero = side === 'left' ? player1 : player2
+  const player = side === 'left' ? 'player1' : 'player2'
 
   const displayDiceBonus = () => {
     if (playerHero && playerHero.diceBonus && playerHero.diceBonus !== 0) {
@@ -29,39 +32,41 @@ const Hero = ({ currentPowerStats, dice, side }: Props) => {
   }
 
   return (
-    <HeroContainer
-      animate={isHeroesFighting ? 'fighting' : 'default'}
-      initial="default"
-      transition={heroTransition}
-      variants={heroVariants}
-    >
-      <HeroCard
-        heroAlt={playerHero?.name}
-        heroAppearance={playerHero?.appearance}
-        heroBiography={playerHero?.biography}
-        heroImage={playerHero?.images?.lg}
-      />
-      {isHeroesFighting && (
-        <>
-          <BonusText>{displayDiceBonus()}</BonusText>
-          <DiceWrapper side={side}>
-            <DiceIndicators dice={dice} side={side} />
-          </DiceWrapper>
-          <HeroCurrentStats
-            animate="visible"
-            initial="hidden"
-            variants={currentStatsVarinats}
-            transition={{ duration: 0.2, delay: 1 }}
-            side={side}
-          >
-            <h3>{currentPowerStats}</h3>
-            <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
-          </HeroCurrentStats>
-        </>
-      )}
+    <>
+      <HeroContainer
+        animate={isHeroesFighting ? 'fighting' : 'default'}
+        initial="default"
+        transition={heroTransition}
+        variants={heroVariants}
+      >
+        <HeroCard
+          heroAlt={playerHero?.name}
+          heroAppearance={playerHero?.appearance}
+          heroBiography={playerHero?.biography}
+          heroImage={playerHero?.images?.lg}
+        />
+        {isHeroesFighting && (
+          <>
+            <BonusText>{displayDiceBonus()}</BonusText>
+            <DiceWrapper side={side}>
+              <DiceIndicators dice={dice} side={side} />
+            </DiceWrapper>
+            <HeroCurrentStats
+              animate={isRollingDiceReady ? 'hidden' : 'visible'}
+              initial="hidden"
+              variants={currentStatsVarinats}
+              transition={{ duration: 0.2, delay: 1 }}
+              side={side}
+            >
+              <h3>{currentPowerStats}</h3>
+              <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
+            </HeroCurrentStats>
+          </>
+        )}
 
-      {playerHero && <HeroPowerStats playerHero={playerHero} side={side} />}
-    </HeroContainer>
+        {playerHero && <HeroPowerStats playerHero={playerHero} side={side} />}
+      </HeroContainer>
+    </>
   )
 }
 
