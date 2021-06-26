@@ -9,7 +9,7 @@ export const useSideBar = () => {
     state: { isHeroesFighting },
   } = useHeroesContext()
 
-  const [isOpen, setIsOpen] = useState(ClOSE_SIDEBAR_MAX_WIDTH < windowWidth)
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (ClOSE_SIDEBAR_MAX_WIDTH < windowWidth && !isHeroesFighting) {

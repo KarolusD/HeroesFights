@@ -11,7 +11,7 @@ interface IDie {
   position: number[]
   rotation?: number[]
   updatePlayerPoints: (points: number, player: 'player1' | 'player2') => void
-  updateDice: (faceUp: number) => void
+  updateRolledDiceCount: () => void
   walls: string[]
 }
 
@@ -23,7 +23,7 @@ const D6 = ({
   position,
   rotation,
   updatePlayerPoints,
-  updateDice,
+  updateRolledDiceCount,
   walls,
 }: IDie) => {
   const { ref, faceUp, isDieLanded } = useDie({
@@ -34,17 +34,17 @@ const D6 = ({
 
   useEffect(() => {
     if (isDieLanded && faceUp) {
-      updateDice(faceUp)
+      updateRolledDiceCount()
       updatePlayerPoints(faceUp, player)
     }
-  }, [player, isDieLanded, faceUp])
+  }, [isDieLanded])
 
   return (
     <Box args={[1, 1, 1]} ref={ref} castShadow receiveShadow>
       {[...Array(SIDES)].map((_, i) => {
         const texture = useLoader(THREE.TextureLoader, walls[i])
         return (
-          <meshPhongMaterial attachArray="material" map={texture} key={i} />
+          <meshLambertMaterial attachArray="material" map={texture} key={i} />
         )
       })}
     </Box>

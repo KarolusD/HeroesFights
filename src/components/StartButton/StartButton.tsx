@@ -9,8 +9,8 @@ interface Props {
 
 const StartButton = ({ onClick }: Props) => {
   const startButtonVariants = {
-    visible: { top: 0, opacity: 1 },
-    hidden: { top: 100, opacity: 0, transitionEnd: { display: 'none' } },
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
   }
 
   const startButtonTranstion = {
@@ -25,7 +25,7 @@ const StartButton = ({ onClick }: Props) => {
   return (
     <Button
       animate={isHeroesFighting ? 'hidden' : 'visible'}
-      initial={isHeroesFighting ? 'hidden' : 'visible'}
+      initial="visible"
       onClick={onClick}
       transition={startButtonTranstion}
       variants={startButtonVariants}
@@ -38,7 +38,8 @@ const StartButton = ({ onClick }: Props) => {
 export default StartButton
 
 export const Button = styled(motion.button)`
-  background: transparent;
+  background: ${({ theme }) => `${theme.colors.background}79`};
+  bottom: 20%;
   border: none;
   box-shadow: none;
   margin-bottom: 40px;
@@ -50,10 +51,11 @@ export const Button = styled(motion.button)`
   height: 56px;
   left: 50%;
   padding: 0 60px;
-  position: relative;
+  position: fixed;
   transform: translateX(-50%);
   transition: background 200ms ease;
   white-space: nowrap;
+  user-select: none;
 
   &:hover {
     color: ${({ theme }) => theme.colors.background};
@@ -82,10 +84,10 @@ export const Button = styled(motion.button)`
     clip-path: polygon(
       0% 0%,
       0% 100%,
-      1% 100%,
-      1% 2%,
-      99% 2%,
-      99% 98%,
+      0.5% 100%,
+      0.5% 2.5%,
+      99.5% 2.5%,
+      99.5% 98%,
       0% 98%,
       0% 100%,
       100% 100%,
@@ -100,5 +102,9 @@ export const Button = styled(motion.button)`
       `linear-gradient(90deg, ${theme.colors.blue} 0%, ${theme.colors.violet} 50%, ${theme.colors.red} 100%)`};
     opacity: 0;
     transition: 200ms ease;
+  }
+
+  @media (max-width: 768px) {
+    bottom: 40px;
   }
 `

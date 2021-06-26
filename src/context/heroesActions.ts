@@ -15,18 +15,18 @@ type SetPlayer2HeroAction = {
 }
 
 type SetAllHerosAction = {
-  type: 'SET_ALL_HEROS'
+  type: 'SET_ALL_HEROES'
   payload: {
     allHeros: IHero[]
   }
 }
 
 type StartHerosFightAction = {
-  type: 'START_HEROS_FIGHT'
+  type: 'START_HEROES_FIGHT'
 }
 
 type EndHerosFightAction = {
-  type: 'END_HEROS_FIGHT'
+  type: 'END_HEROES_FIGHT'
 }
 
 type AddHeroPointsAction = {
@@ -37,16 +37,8 @@ type AddHeroPointsAction = {
   }
 }
 
-type AddHeroBonusAction = {
-  type: 'ADD_HERO_BONUS'
-  payload: {
-    player: 'player1' | 'player2'
-    bonus: number
-  }
-}
-
 type ResetHerosPointsAction = {
-  type: 'RESET_HEROS_POINTS'
+  type: 'RESET_HEROES_POINTS'
 }
 
 type SaveCalculatedPowerStatsAction = {
@@ -74,6 +66,19 @@ type UpdateRoundNumberAction = {
   }
 }
 
+type UpdateFightStateAction = {
+  type: 'UPDATE_FIGHT_STATE'
+  payload: {
+    heroesFightState:
+      | 'NOT READY'
+      | 'START FIGHTING'
+      | 'ROLLING READY'
+      | 'ROLLING DICE'
+      | 'SCORE READY'
+      | 'WINNER SHOWN'
+  }
+}
+
 export type Action =
   | SetPlayer1HeroAction
   | SetPlayer2HeroAction
@@ -85,3 +90,4 @@ export type Action =
   | ResetHerosPointsAction
   | UpdateDiceCountAction
   | UpdateRoundNumberAction
+  | UpdateFightStateAction

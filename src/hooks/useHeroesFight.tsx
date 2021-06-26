@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { calculateDiceBonus } from '_helpers/calculateDiceBonus'
-import { IHero } from '_types/types'
+import { Players } from '_types/types'
 import { useHeroesContext } from './useHeroesContext'
 import { delay } from '_helpers/delay'
 
 const DICE_NUMBER = 6
 
-export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
+export const useHeroesFight = ({ player1, player2 }: Players) => {
   const [currentPowerStats, setCurrentPowerStats] = useState('')
   const [roundWinner, setRoundWinner] = useState('')
   const [roundDiceBonus, setRoundDiceBonus] = useState(0)
-  const [isRollingDiceReady, setIsRollingDiceReady] = useState(false)
 
   const {
     dispatch,
@@ -39,7 +38,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
         ).entries()) {
           setCurrentPowerStats(stats)
 
-          await delay(500)
+          await delay(300)
 
           const roundBonus = calculateDiceBonus(
             player1.calculatedPowerStats[stats],
@@ -51,7 +50,7 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
             payload: { round: idx + 1 },
           })
 
-          await delay(500)
+          await delay(300)
           // updating dice indicator and setting round winner
           if (
             player1.calculatedPowerStats[stats] >
@@ -112,7 +111,10 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
           await delay(500)
           setRoundWinner('')
         }
-        setIsRollingDiceReady(true)
+        dispatch({
+          type: 'UPDATE_FIGHT_STATE',
+          payload: { heroesFightState: 'ROLLING READY' },
+        })
       }
     }
 
@@ -120,5 +122,5 @@ export const useHeroesFight = (player1?: IHero, player2?: IHero) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHeroesFighting])
 
-  return { currentPowerStats, roundWinner, roundDiceBonus, isRollingDiceReady }
+  return { currentPowerStats, roundWinner, roundDiceBonus }
 }

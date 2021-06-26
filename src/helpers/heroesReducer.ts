@@ -17,24 +17,34 @@ const heroesReducer = (state: State, action: Action) => {
       }
     }
 
-    case 'SET_ALL_HEROS': {
+    case 'SET_ALL_HEROES': {
       return {
         ...state,
         allHeros: action.payload.allHeros,
       }
     }
 
-    case 'START_HEROS_FIGHT': {
+    case 'START_HEROES_FIGHT': {
       return {
         ...state,
         isHeroesFighting: true,
+        heroesFightState: 'START FIGHTING',
       }
     }
 
-    case 'END_HEROS_FIGHT': {
+    case 'UPDATE_FIGHT_STATE': {
+      const { heroesFightState } = action.payload
+      return {
+        ...state,
+        heroesFightState,
+      }
+    }
+
+    case 'END_HEROES_FIGHT': {
       return {
         ...state,
         isHeroesFighting: false,
+        heroesFightState: 'NOT READY',
       }
     }
 
@@ -64,20 +74,20 @@ const heroesReducer = (state: State, action: Action) => {
       }
     }
 
-    case 'RESET_HEROS_POINTS': {
+    case 'RESET_HEROES_POINTS': {
       const player1 = 'player1' as keyof State
       const player2 = 'player2' as keyof State
       return {
         ...state,
         [player1]: {
           ...(state[player1] as object),
-          diceBonus: 0,
-          dicePoints: [],
+          diceBonus: undefined,
+          dicePoints: undefined,
         },
         [player2]: {
           ...(state[player2] as object),
-          diceBonus: 0,
-          dicePoints: [],
+          diceBonus: undefined,
+          dicePoints: undefined,
         },
       }
     }

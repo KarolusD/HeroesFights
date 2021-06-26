@@ -28,7 +28,7 @@ const HeroInGrid = ({ isSelected, hero, side, root }: Props) => {
 
   const { dispatch } = useHeroesContext()
 
-  const handlePlayerHeroSetting = () => {
+  const handlePlayerHeroSelecting = () => {
     if (side === 'left') {
       dispatch({ type: 'SET_PLAYER_1', payload: { player1: hero } })
     }
@@ -50,7 +50,7 @@ const HeroInGrid = ({ isSelected, hero, side, root }: Props) => {
     <HeroMiniCard
       ref={setImageRef}
       isSelected={isSelected}
-      onClick={handlePlayerHeroSetting}
+      onClick={handlePlayerHeroSelecting}
       side={side}
     >
       <HeroImg

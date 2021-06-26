@@ -9,6 +9,7 @@ export type State = {
   player2?: IHero
   allHeros?: IHero[]
   isHeroesFighting: boolean
+  heroesFightState: string
   round: number
 }
 
@@ -19,6 +20,7 @@ const initialState: State = {
   player2: undefined,
   allHeros: [],
   isHeroesFighting: false,
+  heroesFightState: 'NOT READY',
   round: 0,
 }
 

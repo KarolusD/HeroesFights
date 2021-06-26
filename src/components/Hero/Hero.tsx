@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
-import React, { useState } from 'react'
-import styled, { css, keyframes } from 'styled-components'
-import DiceScene from '_components/DiceScene/DiceScene'
+import React from 'react'
+import styled, { css } from 'styled-components'
 import { useHeroAnimation } from '_hooks/useHeroAnimation'
 import { useHeroesContext } from '_hooks/useHeroesContext'
 import DiceIndicators from '../DiceIndicators/DiceIndicator'
@@ -11,19 +10,18 @@ import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
 interface Props {
   currentPowerStats: string
   dice?: boolean[]
-  isRollingDiceReady: boolean
   side: 'left' | 'right'
+  isWinner: boolean
 }
 
-const Hero = ({ currentPowerStats, isRollingDiceReady, dice, side }: Props) => {
+const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
   const { heroTransition, heroVariants } = useHeroAnimation(side)
 
   const {
-    state: { player1, player2, isHeroesFighting },
+    state: { player1, player2, isHeroesFighting, heroesFightState },
   } = useHeroesContext()
 
   const playerHero = side === 'left' ? player1 : player2
-  const player = side === 'left' ? 'player1' : 'player2'
 
   const displayDiceBonus = () => {
     if (playerHero && playerHero.diceBonus && playerHero.diceBonus !== 0) {
@@ -31,38 +29,59 @@ const Hero = ({ currentPowerStats, isRollingDiceReady, dice, side }: Props) => {
     }
   }
 
+  const renderTextAboveHero = () => {
+    let text: string | undefined
+
+    if (isWinner && heroesFightState === 'WINNER SHOWN') {
+      text = `${playerHero?.name} is a winner!`
+    } else if (!isWinner && heroesFightState === 'WINNER SHOWN') {
+      text = 'K.O'
+    } else {
+      text = displayDiceBonus()
+    }
+
+    return text && <TopHeroText>{text}</TopHeroText>
+  }
+
   return (
     <>
+      <HeroWinnerBackground isWinner={isWinner} side={side} />
       <HeroContainer
         animate={isHeroesFighting ? 'fighting' : 'default'}
         initial="default"
         transition={heroTransition}
         variants={heroVariants}
       >
-        <HeroCard
-          heroAlt={playerHero?.name}
-          heroAppearance={playerHero?.appearance}
-          heroBiography={playerHero?.biography}
-          heroImage={playerHero?.images?.lg}
-        />
-        {isHeroesFighting && (
-          <>
-            <BonusText>{displayDiceBonus()}</BonusText>
-            <DiceWrapper side={side}>
-              <DiceIndicators dice={dice} side={side} />
-            </DiceWrapper>
-            <HeroCurrentStats
-              animate={isRollingDiceReady ? 'hidden' : 'visible'}
-              initial="hidden"
-              variants={currentStatsVarinats}
-              transition={{ duration: 0.2, delay: 1 }}
-              side={side}
-            >
-              <h3>{currentPowerStats}</h3>
-              <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
-            </HeroCurrentStats>
-          </>
-        )}
+        <HeroCardWinner isWinner={isWinner}>
+          <HeroCard
+            heroAlt={playerHero?.name}
+            heroAppearance={playerHero?.appearance}
+            heroBiography={playerHero?.biography}
+            heroImage={playerHero?.images?.lg}
+          />
+          {isHeroesFighting && (
+            <>
+              {renderTextAboveHero()}
+              {heroesFightState !== 'WINNER SHOWN' && (
+                <DiceWrapper side={side}>
+                  <DiceIndicators dice={dice} side={side} />
+                </DiceWrapper>
+              )}
+              <HeroCurrentStats
+                animate={
+                  heroesFightState === 'START FIGHTING' ? 'visible' : 'hidden'
+                }
+                initial="hidden"
+                variants={currentStatsVarinats}
+                transition={{ duration: 0.2, delay: 1 }}
+                side={side}
+              >
+                <h3>{currentPowerStats}</h3>
+                <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
+              </HeroCurrentStats>
+            </>
+          )}
+        </HeroCardWinner>
 
         {playerHero && <HeroPowerStats playerHero={playerHero} side={side} />}
       </HeroContainer>
@@ -72,7 +91,7 @@ const Hero = ({ currentPowerStats, isRollingDiceReady, dice, side }: Props) => {
 
 export default Hero
 
-const BonusText = styled.p`
+const TopHeroText = styled.p`
   color: ${({ theme }) => theme.colors.text};
   font-size: 1.2rem;
   position: absolute;
@@ -100,13 +119,52 @@ const HeroContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   position: relative;
+  height: 100%;
+`
+
+const HeroCardWinner = styled.div<{
+  isWinner: boolean
+}>`
+  transition: 600ms ease;
+  transform: ${({ isWinner }) => (isWinner ? 'scale(1.6)' : 'scale(1)')};
+
+  @media (max-width: 768px) {
+    transform: ${({ isWinner }) => (isWinner ? 'scale(1.2)' : 'scale(1)')};
+  }
+`
+
+const HeroWinnerBackground = styled.div<{
+  side: 'left' | 'right'
+  isWinner: boolean
+}>`
+  position: absolute;
+  height: 100vh;
+  width: 50vw;
+  top: 0;
+  left: ${({ side }) => (side === 'left' ? '0' : 'calc(100% - 50vw)')};
+  z-index: 0;
+
+  ${({ isWinner, side }) =>
+    isWinner &&
+    css`
+      background: ${({ theme }) =>
+        side === 'left'
+          ? `linear-gradient(
+        270deg,
+        rgba(106, 157, 234, 0) 0%,
+        rgba(106, 157, 234, 0.24) 100%)`
+          : `linear-gradient(
+        270deg,
+        rgba(234, 106, 106, 0.24) 0%,
+        rgba(234, 106, 106, 0.0) 100%)`};
+    `}
 `
 
 const HeroCurrentStats = styled(motion.div)<{ side: 'left' | 'right' }>`
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 8%;
+  top: 20%;
   min-width: 300px;
 
   & > h2,

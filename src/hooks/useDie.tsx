@@ -16,8 +16,12 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
   const [isDieLanded, setIsDieLanded] = useState(false)
   const [ref, api] = useBox(() => ({
     mass: 1,
-    position: position,
-    rotation: rotation || [Math.random(), Math.random(), Math.random()],
+    position: position || [0, 0, 0],
+    rotation: rotation || [
+      Math.random() * Math.PI,
+      Math.random() * Math.PI,
+      Math.random() * Math.PI,
+    ],
   }))
 
   const positionRef = useRef([0, 0, 0])
@@ -27,7 +31,7 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
   // apply impulse at the begining of the die roll
   useEffect(() => {
     api.applyImpulse(impulse, [0, 0, 0])
-    api.position.subscribe((pos) => (positionRef.current = pos))
+    api.position.subscribe((pos) => (positionRef.current = pos || [0, 0, 0]))
   }, [])
 
   useFrame(({ clock }) => {
@@ -48,8 +52,6 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
       const face = whichFaceIsUp(ref.current?.rotation)
       setFaceUp(face)
       setIsDieLanded(true)
-
-      console.log(face, '<--- face')
     }
   })
 

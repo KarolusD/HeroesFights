@@ -47,3 +47,8 @@ export interface IHero {
 }
 
 export type PreparationT = 'unprepared' | 'prepared' | 'fully-prepared'
+
+export type Players = {
+  player1?: IHero
+  player2?: IHero
+}

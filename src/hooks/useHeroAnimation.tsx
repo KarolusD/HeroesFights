@@ -11,14 +11,19 @@ export const useHeroAnimation = (side: 'left' | 'right') => {
   const heroHeight = useMotionValue('auto')
 
   useEffect(() => {
-    if (windowWidth <= 768) {
-      heroX.set(side === 'left' ? '-24vw' : '24vw')
-      heroY.set('0')
+    if (windowWidth <= 360) {
+      heroX.set(side === 'left' ? '-12vw' : '12vw')
+      heroY.set(side === 'left' ? '-24vh' : '-76vh')
+      heroScale.set(0.4)
+      // heroHeight.set('160px')
+    } else if (windowWidth <= 768) {
+      heroX.set(side === 'left' ? '-12vw' : '12vw')
+      heroY.set(side === 'left' ? '4vh' : '-12vh')
       heroScale.set(0.6)
-      heroHeight.set('140px')
+      heroHeight.set('160px')
     } else {
-      heroX.set(side === 'left' ? '-14vw' : '14vw')
-      heroY.set('10vw')
+      heroX.set(side === 'left' ? `-14vw` : '14vw')
+      heroY.set(`${windowHeight / 4.25}px`)
       heroScale.set(1)
       heroHeight.set('auto')
     }
@@ -41,8 +46,7 @@ export const useHeroAnimation = (side: 'left' | 'right') => {
 
   const heroTransition = {
     type: 'ease',
-    duration: 0.6,
-    delay: 0.2,
+    duration: 0.4,
   }
 
   return { heroVariants, heroTransition }
