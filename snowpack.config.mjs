@@ -15,7 +15,7 @@ export default {
   },
   env: {
     HEROES_LOCAL_API_URL: 'http://localhost:5000/api/v1',
-    HEROES_API_URL: '',
+    HEROES_API_URL: 'https://heroes-fights.herokuapp.com/api/v1',
   },
   mount: {
     public: '/',
