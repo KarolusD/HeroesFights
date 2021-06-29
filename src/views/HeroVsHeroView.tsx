@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { getAllHeros } from '_api/herosApi'
+import { getAllHeroes } from '_api/heroesApi'
 import styled from 'styled-components'
 import Hexagon from '_assets/Hexagon'
 import Hero from '_components/Hero/Hero'
@@ -18,7 +18,7 @@ import useRollingDice from '_hooks/useRollingDice'
 import { useWinner } from '_hooks/useWinner'
 
 const HeroVsHeroView = () => {
-  const { error, data } = useQuery('heros', getAllHeros)
+  const { error, data } = useQuery('heros', getAllHeroes)
   const {
     dispatch,
     state: { player1, player2, isHeroesFighting, heroesFightState },
@@ -40,7 +40,7 @@ const HeroVsHeroView = () => {
   )
 
   useEffect(() => {
-    dispatch({ type: 'SET_ALL_HEROES', payload: { allHeros: data } })
+    dispatch({ type: 'SET_ALL_HEROES', payload: { allHeroes: data } })
     if (error) {
       setErrorOcc(true)
       setErrorMsg('Unable to download heroes data, please try again later :(')

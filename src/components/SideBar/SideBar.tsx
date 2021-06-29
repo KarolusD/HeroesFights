@@ -17,10 +17,10 @@ const SideBar = ({ side }: Props) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const {
-    state: { allHeros, isHeroesFighting },
+    state: { allHeroes, isHeroesFighting },
   } = useHeroesContext()
 
-  const { filteredHeros } = useHeroSearch(allHeros, searchTerm)
+  const { filteredHeros } = useHeroSearch(allHeroes, searchTerm)
 
   const handleSwipeLeft = () => {
     if (isOpen && side === 'left') {
@@ -73,7 +73,7 @@ const SideBar = ({ side }: Props) => {
             e.preventDefault()
           }}
         >
-          {allHeros && <SearchBar setSearchTerm={setSearchTerm} />}
+          {allHeroes && <SearchBar setSearchTerm={setSearchTerm} />}
         </SearchForm>
 
         <HerosGrid filteredHeros={filteredHeros} side={side} />

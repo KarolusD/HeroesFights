@@ -7,7 +7,7 @@ import { Action } from './heroesActions'
 export type State = {
   player1?: IHero
   player2?: IHero
-  allHeros?: IHero[]
+  allHeroes?: IHero[]
   isHeroesFighting: boolean
   heroesFightState: string
   round: number
@@ -18,14 +18,15 @@ type Dispatch = (action: Action) => void
 const initialState: State = {
   player1: undefined,
   player2: undefined,
-  allHeros: [],
+  allHeroes: [],
   isHeroesFighting: false,
   heroesFightState: 'NOT READY',
   round: 0,
 }
 
-export const HeroesContext =
-  createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
+export const HeroesContext = createContext<
+  { state: State; dispatch: Dispatch } | undefined
+>(undefined)
 
 interface Props {
   children: ReactNode

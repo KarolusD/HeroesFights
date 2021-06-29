@@ -14,10 +14,10 @@ type SetPlayer2HeroAction = {
   }
 }
 
-type SetAllHerosAction = {
+type SetAllHeroesAction = {
   type: 'SET_ALL_HEROES'
   payload: {
-    allHeros: IHero[]
+    allHeroes: IHero[]
   }
 }
 
@@ -82,7 +82,7 @@ type UpdateFightStateAction = {
 export type Action =
   | SetPlayer1HeroAction
   | SetPlayer2HeroAction
-  | SetAllHerosAction
+  | SetAllHeroesAction
   | StartHerosFightAction
   | EndHerosFightAction
   | AddHeroPointsAction

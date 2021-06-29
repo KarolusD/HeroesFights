@@ -25,8 +25,8 @@ export const useHeroesFight = ({ player1, player2 }: Players) => {
         player1.calculatedPowerStats &&
         player2.calculatedPowerStats
       ) {
-        player1.diceCount = [...Array(DICE_NUMBER)].map(() => false)
-        player2.diceCount = [...Array(DICE_NUMBER)].map(() => false)
+        // player1.diceCount = [...Array(DICE_NUMBER)].map(() => false)
+        // player2.diceCount = [...Array(DICE_NUMBER)].map(() => false)
 
         let player1DiceBonus = 0
         let player2DiceBonus = 0

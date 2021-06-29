@@ -14,8 +14,8 @@ export default {
     _views: './src/views',
   },
   env: {
-    HEROS_LOCAL_API_URL: 'http://localhost:5000/api/v1',
-    HEROS_API_URL: '',
+    HEROES_LOCAL_API_URL: 'http://localhost:5000/api/v1',
+    HEROES_API_URL: '',
   },
   mount: {
     public: '/',

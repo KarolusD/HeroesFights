@@ -1,26 +1,35 @@
 import { State } from '_context/HeroesContext'
 import { Action } from '_context/heroesActions'
 
+const DICE_NUMBER = 6
+
 const heroesReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'SET_PLAYER_1': {
       return {
         ...state,
-        player1: action.payload.player1,
+        player1: {
+          ...action.payload.player1,
+          diceCount: [...Array(DICE_NUMBER)].map(() => false),
+        },
       }
     }
 
     case 'SET_PLAYER_2': {
       return {
         ...state,
-        player2: action.payload.player2,
+        player2: {
+          ...action.payload.player2,
+
+          diceCount: [...Array(DICE_NUMBER)].map(() => false),
+        },
       }
     }
 
     case 'SET_ALL_HEROES': {
       return {
         ...state,
-        allHeros: action.payload.allHeros,
+        allHeroes: action.payload.allHeroes,
       }
     }
 
@@ -83,11 +92,13 @@ const heroesReducer = (state: State, action: Action) => {
           ...(state[player1] as object),
           diceBonus: undefined,
           dicePoints: undefined,
+          diceCount: [...Array(DICE_NUMBER)].map(() => false),
         },
         [player2]: {
           ...(state[player2] as object),
           diceBonus: undefined,
           dicePoints: undefined,
+          diceCount: [...Array(DICE_NUMBER)].map(() => false),
         },
       }
     }
