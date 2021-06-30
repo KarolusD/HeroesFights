@@ -14,7 +14,6 @@ import { useMainHexIndicator } from '_hooks/useMainHexIndicator'
 import MainTemplate from '_templates/MainTemplate'
 import DiceScene from '_components/DiceScene/DiceScene'
 import { calculateDiceScore } from '_helpers/calculateDiceScore'
-import useRollingDice from '_hooks/useRollingDice'
 import { useWinner } from '_hooks/useWinner'
 
 const HeroVsHeroView = () => {

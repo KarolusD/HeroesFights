@@ -3,6 +3,50 @@ import styled from 'styled-components'
 import { throttle } from 'lodash'
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons'
 
+interface Props {
+  setSearchTerm: Dispatch<string>
+}
+
+const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
+  const [keyword, setKeyword] = useState<string>('')
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const throttleSearching = useCallback(
+    throttle((value) => setSearchTerm(value), 500),
+    []
+  )
+
+  const handleTyping = (event: FormEvent<EventTarget>) => {
+    event.preventDefault()
+    let target = event.target as HTMLInputElement
+    setKeyword(target.value)
+    throttleSearching(target.value)
+  }
+
+  const clearSearch = (event: FormEvent<EventTarget>) => {
+    event.preventDefault()
+    setKeyword('')
+    throttleSearching('')
+  }
+
+  return (
+    <Field>
+      <span className="d" />
+      <Search
+        onChange={handleTyping}
+        placeholder="Search for hero"
+        value={keyword}
+      />
+      <SearchIcon />
+      <CloseButton type="button" onClick={(e) => clearSearch(e)}>
+        <CloseIcon />
+      </CloseButton>
+    </Field>
+  )
+}
+
+export default React.memo(SearchBar)
+
 const Search = styled.input`
   background: ${({ theme }) => `${theme.colors.darkGray}EF`};
   border: none;
@@ -66,47 +110,3 @@ const Field = styled.div`
   height: 48px;
   width: 100%;
 `
-
-interface Props {
-  setSearchTerm: Dispatch<string>
-}
-
-const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
-  const [keyword, setKeyword] = useState<string>('')
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const throttleSearching = useCallback(
-    throttle((value) => setSearchTerm(value), 1000),
-    []
-  )
-
-  const handleTyping = (event: FormEvent<EventTarget>) => {
-    event.preventDefault()
-    let target = event.target as HTMLInputElement
-    setKeyword(target.value)
-    throttleSearching(target.value)
-  }
-
-  const clearSearch = (event: FormEvent<EventTarget>) => {
-    event.preventDefault()
-    setKeyword('')
-    throttleSearching('')
-  }
-
-  return (
-    <Field>
-      <span className="d" />
-      <Search
-        onChange={handleTyping}
-        placeholder="Search for hero"
-        value={keyword}
-      />
-      <SearchIcon />
-      <CloseButton type="button" onClick={(e) => clearSearch(e)}>
-        <CloseIcon />
-      </CloseButton>
-    </Field>
-  )
-}
-
-export default React.memo(SearchBar)

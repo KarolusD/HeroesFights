@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { InfoCircleOutlined } from '@ant-design/icons'
 import { motion } from 'framer-motion'
 import { useHeroesContext } from '_hooks/useHeroesContext'
+import InfoModal from '_components/InfoModal/InfoModal'
+import { useModal } from '_hooks/useModal'
+import Modal from '_components/Modal/Modal'
 
 interface Props {}
 
@@ -22,32 +25,61 @@ const Header: React.FC<Props> = () => {
     duration: 0.2,
   }
 
+  const { isOpen, close, open } = useModal()
+
   return (
-    <TopBar
-      animate={isHeroesFighting ? 'hidden' : 'visible'}
-      transition={headerTransition}
-      variants={headerVariants}
-    >
-      <Logo>Super heros fights</Logo>
-      <nav>
-        <List>
-          <Item>
-            <StyledLink exact to="/hero-vs-hero" activeClassName="selected">
-              Hero vs Hero
-            </StyledLink>
-          </Item>
-          <Item>
-            <StyledLink exact to="/heroes-wiki" activeClassName="selected">
-              Heroes wiki
-            </StyledLink>
-          </Item>
-        </List>
-      </nav>
-      <Info>
-        <p>Info</p>
-        <InfoCircleOutlined />
-      </Info>
-    </TopBar>
+    <>
+      <TopBar
+        animate={isHeroesFighting ? 'hidden' : 'visible'}
+        transition={headerTransition}
+        variants={headerVariants}
+      >
+        <Logo>Super heros fights</Logo>
+        <nav>
+          <List>
+            <Item>
+              <StyledLink exact to="/hero-vs-hero" activeClassName="selected">
+                Hero vs Hero
+              </StyledLink>
+            </Item>
+            <Item>
+              <StyledLink exact to="/heroes-wiki" activeClassName="selected">
+                Heroes wiki
+              </StyledLink>
+            </Item>
+          </List>
+        </nav>
+        <Info onClick={open}>
+          <p>Info</p>
+          <InfoCircleOutlined />
+        </Info>
+      </TopBar>
+      <Modal
+        isOpen={isOpen}
+        close={close}
+        headerText="Information"
+        modalContent={
+          <InfoModal
+            info={
+              <>
+                This application provide possiblity to test your favourite super
+                heroes. Finally you can face heroes from different universes 🪐
+                The fight itself is based on powerstats that certain hero has,
+                but also on luck and preparation. Each hero 🦸‍♂️ has 3xD6 dice
+                while fighting, additionaly they can get an extra die for each
+                won round. There are 6 rounds and in the end, roll of dice will
+                decide who won. Wish you best of luck! In order to report a bug
+                or contact me, please catch me on github:
+                <a href="https://github.com/KarolusD" target="_blank">
+                  {' '}
+                  @KarolusD
+                </a>
+              </>
+            }
+          />
+        }
+      />
+    </>
   )
 }
 
@@ -123,13 +155,16 @@ const StyledLink = styled(NavLink)`
   }
 `
 
-const Info = styled.a`
+const Info = styled.button`
   align-items: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
   display: flex;
   flex-flow: row nowrap;
+  padding: 8px;
   text-decoration: none;
-  cursor: pointer;
-
   & > p {
     color: ${({ theme }) => theme.colors.text};
     margin-right: 8px;

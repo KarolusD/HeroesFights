@@ -20,7 +20,6 @@ const heroesReducer = (state: State, action: Action) => {
         ...state,
         player2: {
           ...action.payload.player2,
-
           diceCount: [...Array(DICE_NUMBER)].map(() => false),
         },
       }
