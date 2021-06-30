@@ -142,7 +142,7 @@ const HeroWinnerBackground = styled.div<{
   width: 50vw;
   top: 0;
   left: ${({ side }) => (side === 'left' ? '0' : 'calc(100% - 50vw)')};
-  z-index: 0;
+  display: none;
 
   ${({ isWinner, side }) =>
     isWinner &&
@@ -157,6 +157,7 @@ const HeroWinnerBackground = styled.div<{
         270deg,
         rgba(234, 106, 106, 0.24) 0%,
         rgba(234, 106, 106, 0.0) 100%)`};
+      display: block;
     `}
 `
 

@@ -214,7 +214,7 @@ const MainSection = styled.section<{ isHeroesFighting: boolean }>`
 
   @media (max-width: 768px) {
     padding: ${({ isHeroesFighting }) =>
-      isHeroesFighting ? '0' : '16vh 12vw'};
+      isHeroesFighting ? '0' : '16vh 12vw 32vh 12vw'};
   }
 `
 
