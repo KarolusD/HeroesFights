@@ -7,14 +7,16 @@ interface Props {
   setSearchTerm: Dispatch<string>
 }
 
-const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
-  const [keyword, setKeyword] = useState<string>('')
+const SearchBar = ({ setSearchTerm }: Props) => {
+  const [keyword, setKeyword] = useState('')
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttleSearching = useCallback(
     throttle((value) => setSearchTerm(value), 500),
     []
   )
+
+  
 
   const handleTyping = (event: FormEvent<EventTarget>) => {
     event.preventDefault()
@@ -31,7 +33,6 @@ const SearchBar: React.FC<Props> = ({ setSearchTerm }) => {
 
   return (
     <Field>
-      <span className="d" />
       <Search
         onChange={handleTyping}
         placeholder="Search for hero"

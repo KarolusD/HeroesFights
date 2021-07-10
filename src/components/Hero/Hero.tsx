@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useHeroAnimation } from '_hooks/useHeroAnimation'
 import { useHeroesContext } from '_hooks/useHeroesContext'
 import DiceIndicators from '../DiceIndicators/DiceIndicator'
 import HeroCard from './HeroCard/HeroCard'
 import HeroPowerStats from './HeroPowerStats/HeroPowerStats'
+import { usePlayerChances } from '_hooks/usePlayerChances'
 
 interface Props {
   currentPowerStats: string
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
+  const { playerChances } = usePlayerChances(side === 'left' ? 'player1' : 'player2')
+
   const { heroTransition, heroVariants } = useHeroAnimation(side)
 
   const {
@@ -28,6 +31,18 @@ const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
       return `Dice bonus: ${playerHero.diceBonus}`
     }
   }
+
+  const displayChances = () => {
+    console.log(playerChances, 'hej')
+    if (heroesFightState === 'START FIGHTING' || heroesFightState === 'ROLLING READY') {
+
+      // if ((playerChances * 100).toString().slice(-1) === '0') {
+      //   return `${(playerChances * 100).toFixed()}%`
+      // }
+      return `${(playerChances * 100).toFixed(1)}%`
+    }
+  }
+
 
   const renderTextAboveHero = () => {
     let text: string | undefined
@@ -79,6 +94,14 @@ const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
                 <h3>{currentPowerStats}</h3>
                 <h2>{playerHero?.calculatedPowerStats[currentPowerStats]}</h2>
               </HeroCurrentStats>
+              <HeroChances
+                animate={
+                  (heroesFightState === 'START FIGHTING' || heroesFightState === 'ROLLING READY') ? 'visible' : 'hidden'
+                }
+                initial="hidden"
+                variants={currentStatsVarinats}
+                transition={{ duration: 0.2, delay: 1 }}
+              >{displayChances()}</HeroChances>
             </>
           )}
         </HeroCardWinner>
@@ -90,6 +113,16 @@ const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
 }
 
 export default Hero
+
+const HeroChances = styled(motion.p)`
+  color: ${({ theme }) => theme.colors.text};
+  text-align: center;
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: -40px;
+  left: calc(50% - 20px);
+
+`
 
 const TopHeroText = styled.p`
   color: ${({ theme }) => theme.colors.text};
@@ -161,7 +194,7 @@ const HeroWinnerBackground = styled.div<{
     `}
 `
 
-const HeroCurrentStats = styled(motion.div)<{ side: 'left' | 'right' }>`
+const HeroCurrentStats = styled(motion.div) <{ side: 'left' | 'right' }>`
   display: flex;
   flex-direction: column;
   position: absolute;
