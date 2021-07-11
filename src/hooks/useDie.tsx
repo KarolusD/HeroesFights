@@ -35,20 +35,9 @@ export const useDie = ({ impulse, position, rotation }: IDie) => {
   }, [])
 
   useFrame(({ clock }) => {
-    // wait 3 sec to update position
-    if (prevTime + 3 < clock.elapsedTime) {
-      prevTime = clock.elapsedTime
-      prevPosition = positionRef
-    }
-
-    // if die stops rolling check which face is up
-    if (
-      !isDieLanded &&
-      prevPosition &&
-      prevPosition.current[0] === positionRef.current[0] &&
-      prevPosition.current[1] === positionRef.current[1] &&
-      prevPosition.current[2] === positionRef.current[2]
-    ) {
+    // wait 4 sec for stops rolling 
+    // TODO: think about checking previous positon without a lag
+    if (clock.elapsedTime > 3 && !isDieLanded) {
       const face = whichFaceIsUp(ref.current?.rotation)
       setFaceUp(face)
       setIsDieLanded(true)

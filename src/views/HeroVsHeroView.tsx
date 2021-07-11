@@ -163,6 +163,7 @@ const HeroVsHeroView = () => {
             onClick={startRollingDice}
             transition={{ type: 'ease', duration: 0.5, delay: 1 }}
             variants={buttonVariants}
+            disabled={heroesFightState !== 'ROLLING READY'}
           >
             Roll dice
           </RollingButton>

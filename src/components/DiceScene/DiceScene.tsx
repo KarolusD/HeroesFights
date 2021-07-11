@@ -19,7 +19,7 @@ const SPECIAL_DICE_NUMBER = 3
 const DiceScene = () => {
   const { windowWidth, windowHeight } = useDimensions()
   const {
-    state: { player1, player2 },
+    state: { player1, player2, heroesFightState },
   } = useHeroesContext()
 
   // diceCount is an array of taken dice represented with a booleans [false, true, ...]
@@ -40,11 +40,11 @@ const DiceScene = () => {
     const dieWalls = player === 'player1' ? blueWalls : redWalls
     const specialDieWalls =
       player === 'player1' ? specialBlueWalls : specialRedWalls
-
+    
     return [...Array(playerDiceNumber)].map((_, i) => {
       let dieImpulse = handleDieImpulse(player)
       let diePosition = handleDiePosition(player)
-
+    
       return (
         <D6
           walls={i > 2 ? dieWalls : specialDieWalls}

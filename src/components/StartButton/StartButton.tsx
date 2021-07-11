@@ -9,8 +9,8 @@ interface Props {
 
 const StartButton = ({ onClick }: Props) => {
   const startButtonVariants = {
-    visible: { opacity: 1 },
-    hidden: { opacity: 0 },
+    visible: { opacity: 1, display: 'block' },
+    hidden: { opacity: 0, transitionEnd: {display: 'none'} },
   }
 
   const startButtonTranstion = {
@@ -42,6 +42,7 @@ export const Button = styled(motion.button)`
   bottom: 20%;
   border: none;
   box-shadow: none;
+  display: block;
   margin-bottom: 40px;
   color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
@@ -84,8 +85,8 @@ export const Button = styled(motion.button)`
     clip-path: polygon(
       0% 0%,
       0% 100%,
-      0.5% 100%,
-      0.5% 2.5%,
+      0.75% 100%,
+      0.75% 2.5%,
       99.5% 2.5%,
       99.5% 98%,
       0% 98%,

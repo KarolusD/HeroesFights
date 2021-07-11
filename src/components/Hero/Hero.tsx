@@ -33,7 +33,6 @@ const Hero = ({ currentPowerStats, dice, side, isWinner }: Props) => {
   }
 
   const displayChances = () => {
-    console.log(playerChances, 'hej')
     if (heroesFightState === 'START FIGHTING' || heroesFightState === 'ROLLING READY') {
 
       // if ((playerChances * 100).toString().slice(-1) === '0') {
