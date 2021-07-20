@@ -1,10 +1,10 @@
 # 🦸‍♂️ Heros Fights
 
-Application where you are able to tests your favourite heroes powers 🔥 💨 🌊
+Application where you are able to test your favourite heroes powers.
 Includes over 700 heroes from different universes 🪐
 Uses 3d dice rolling system and dynamic heroes stats
 
-#### Live demo: https://heroes-fights.netlify.app/
+#### Live demo: https://heroes-fights.netlify.app/hero-vs-hero
 
 ## 🛠 Main used tools
 
