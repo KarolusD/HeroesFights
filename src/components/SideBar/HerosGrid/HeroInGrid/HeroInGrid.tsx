@@ -192,9 +192,6 @@ const HeroImg = styled.img`
   &.has-error {
     content: url(${placeholder});
   }
-
-  &::before {
-  }
 `
 
 const HeroName = styled.h2`

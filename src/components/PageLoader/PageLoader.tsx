@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import Loader from 'react-loader-spinner'
 import styled, { ThemeContext } from 'styled-components'
 
-
 const PageLoader = () => {
   const theme = useContext(ThemeContext)
 
@@ -29,4 +28,6 @@ const LoaderCointainer = styled.div`
   position: fixed;
   width: 100%;
   z-index: 999;
+  top: 0;
+  left: 0;
 `

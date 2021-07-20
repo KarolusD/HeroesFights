@@ -15,9 +15,10 @@ import MainTemplate from '_templates/MainTemplate'
 import DiceScene from '_components/DiceScene/DiceScene'
 import { calculateDiceScore } from '_helpers/calculateDiceScore'
 import { useWinner } from '_hooks/useWinner'
+import PageLoader from '_components/PageLoader/PageLoader'
 
 const HeroVsHeroView = () => {
-  const { error, data } = useQuery('heros', getAllHeroes)
+  const { error, data, isLoading } = useQuery('heros', getAllHeroes)
   const {
     dispatch,
     state: { player1, player2, isHeroesFighting, heroesFightState },
@@ -195,6 +196,7 @@ const HeroVsHeroView = () => {
         )}
       </MainSection>
       <SideBar side="right" />
+      {isLoading && <PageLoader />}
     </MainTemplate>
   )
 }
