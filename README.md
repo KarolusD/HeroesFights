@@ -30,7 +30,7 @@
       <a href="#current-functionalities">Current functionalities</a>
     </li>
     <li>
-      <a href="#planed-functionalities">Planed functionalities</a>
+      <a href="#planned-functionalities">Planed functionalities</a>
     </li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
